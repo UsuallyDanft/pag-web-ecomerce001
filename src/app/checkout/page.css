@@ -1,0 +1,138 @@
+/* Contenedor principal del checkout */
+.checkout-container {
+  display: flex;
+  min-height: calc(100vh - 80px); /* Restar el espacio del header */
+  background-color: var(--bg-primary);
+  gap: 0;
+}
+
+/* Sección de pago (60% del ancho) */
+.payment-section {
+  flex: 0 0 60%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border-color);
+}
+
+.payment-content {
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.payment-content h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Aviso de desarrollo */
+.development-notice {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, var(--accent-color) 0%, #764ba2 100%);
+  border-radius: 16px;
+  color: white;
+  margin-top: 2rem;
+  box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+.development-notice h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.development-notice p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+}
+
+.development-icon {
+  font-size: 4rem;
+  margin-top: 1rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Estilos para el breadcrumbs en checkout */
+.checkout-breadcrumbs {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 2rem;
+  margin: 0;
+}
+
+.checkout-breadcrumbs .breadcrumbs {
+  margin: 0;
+  padding: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Sección del carrito (40% del ancho) */
+.cart-section {
+  flex: 0 0 40%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .checkout-container {
+    flex-direction: column;
+  }
+  
+  .payment-section {
+    flex: none;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .cart-section {
+    flex: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .payment-section {
+    padding: 1.5rem;
+  }
+  
+  .cart-section {
+    padding: 1rem;
+  }
+  
+  .payment-content h1 {
+    font-size: 1.5rem;
+  }
+  
+  .development-notice {
+    padding: 2rem 1rem;
+  }
+  
+  .development-notice h2 {
+    font-size: 1.25rem;
+  }
+  
+  .development-notice p {
+    font-size: 1rem;
+  }
+  
+  .development-icon {
+    font-size: 3rem;
+  }
+} 

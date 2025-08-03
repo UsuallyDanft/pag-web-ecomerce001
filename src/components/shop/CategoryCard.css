@@ -1,0 +1,68 @@
+.category-card {
+  max-width: 360px;
+  min-width: 360px;
+  border-radius: 20px;
+  border: 2px solid var(--border-color);
+  overflow: hidden; /* Asegura que la imagen no se salga de los bordes redondeados */
+  background-color: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  }
+  
+  .category-card:hover {
+    border: 2px solid var(--accent-color);
+  }
+  
+  .category-image {
+    max-width: 100%;
+    height: 400px;
+    background-color: var(--bg-tertiary);
+    object-fit: contain; /* Evita que la imagen se deforme */
+    transition: transform 0.3s ease;
+  }
+  
+  .category-image:hover {
+    transform: scale(1.03);
+  }
+  
+  .category-info {
+    background-color: var(--bg-secondary);
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+  }
+  
+  .category-name {
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .category-description {
+    font-size: 0.9rem;
+    flex-grow: 1;
+    margin-bottom: 2px;
+  }
+  
+  .category-actions {
+    display: flex;
+    margin-top: 1rem;
+  }
+  
+  .view-btn {
+    flex: 1;
+    padding: 0.75rem;
+    background-color: var(--text-primary);
+    color: var(--bg-secondary);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .view-btn:hover {
+    background-color: var(--accent-color);
+  }

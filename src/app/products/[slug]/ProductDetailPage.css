@@ -1,0 +1,246 @@
+/* Estructura principal de la página de detalle del producto */
+.product-detail-page {
+  display: flex;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 5rem auto;
+  padding: 2rem;
+}
+
+.gallery-container, .info-actions-container {
+  flex: 1;
+}
+
+/* Estilos de la Galería de Imágenes */
+.gallery-container .main-image-wrapper img {
+  max-width: 100%;
+  height: 450px;
+  background-color: rgb(242, 242, 242);
+  border: 2px solid #cccccc;
+  border-radius: 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  object-fit: contain;
+}
+
+.thumbnail-wrapper {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.thumbnail-wrapper img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.thumbnail-wrapper img:hover, .thumbnail-wrapper img.active {
+  border-color: #007bff;
+}
+
+/* Estilos de la Información y Acciones del Producto */
+.info-actions-container .product-title {
+  font-size: 2.2rem; /* ✨ Reducido de 2.5rem */
+  margin-bottom: 0.5rem;
+}
+
+.info-actions-container .product-price {
+  font-size: 1.8rem; /* ✨ Reducido de 2rem */
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 1.5rem;
+}
+
+/* Estilos para las etiquetas (tags) del producto */
+.product-tags {
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.product-tags h4 {
+  font-size: 1rem; /* ✨ Reducido de 1.1rem */
+  color: #007bff;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.product-tags ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.product-tags li {
+  background: #e3f0ff;
+  color: #0b73c2;
+  border-radius: 20px;
+  padding: 0.3rem 1rem;
+  font-size: 0.9rem; /* ✨ Reducido de 0.95rem */
+  font-weight: 500;
+  border: 1px solid #b3d8fd;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* Estilos de la descripción (del segundo bloque) */
+.info-actions-container .product-description-title {
+  font-size: 1.8rem; /* ✨ Reducido de 2.0rem */
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.info-actions-container .product-description {
+  font-size: 1rem; /* ✨ Reducido de 1.2rem */
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Selector de Cantidad */
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.quantity-controls button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: var(--accent-color);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.quantity-controls button:hover {
+  background: var(--accent-hover);
+  color: white;
+}
+
+.quantity-controls button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--border-color);
+}
+
+.quantity-controls button svg {
+  color: inherit;
+  stroke: currentColor;
+}
+
+.quantity-controls span {
+  width: 50px;
+  text-align: center;
+  font-size: 1.1rem; /* ✨ Reducido de 1.2rem */
+}
+
+.stock-info {
+  color: var(--text-secondary);
+}
+
+/* Contenedor de Botones de Acción */
+.action-buttons {
+  display: flex;
+  width: 70%;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Estilos base para ambos botones de acción */
+.action-buttons button {
+  flex-grow: 1;
+  padding: 1rem;
+  border-radius: 50px;
+  border: none;
+  font-size: 1rem; /* ✨ Reducido de 1.1rem */
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(30, 30, 30, 0.253);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Botón "Añadir al carrito" */
+.add-to-cart-btn {
+  background-color: #3b3b3b;
+  color: white;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #f7ca00;
+  color: #000000;
+  transform: scale(1.03);
+}
+
+/* Botón "Comprar ahora" */
+.buy-now-btn {
+  background-color: #0b73c2;
+  color: white;
+}
+
+.buy-now-btn:hover {
+  background-color: #f3f3f3;
+  color: rgb(19, 19, 19);
+  transform: scale(1.03);
+}
+
+/* Estilos para el contenedor de la descripción detallada (del primer bloque) */
+.product-description-detail {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.product-description-detail h3 {
+  font-size: 1.3rem; /* ✨ Reducido de 1.5rem */
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.product-description-detail p {
+  line-height: 1.7;
+  color: var(--text-secondary);
+  font-size: 0.9rem; /* ✨ Reducido de 1rem */
+}
+
+/* Diseño Responsivo para pantallas más pequeñas */
+@media (max-width: 900px) {
+  .product-detail-page {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem;
+    align-items: center;
+  }
+
+  .gallery-container, .info-actions-container {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .gallery-container .main-image-wrapper img {
+    height: 300px;
+  }
+
+  .action-buttons {
+    width: 100%; /* Hacemos que los botones ocupen más ancho en móvil */
+  }
+}

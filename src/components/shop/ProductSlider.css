@@ -1,0 +1,188 @@
+.product-slider-container {
+  max-width: 100%;
+  height: 550px;
+  margin: 0 auto 1rem auto;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.product-slider-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-left: 0;
+  margin-bottom: 1rem;
+  width: 100%;
+  text-align: center;
+}
+
+.slider-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.slider-btn {
+  align-self: center;
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  background: #373737;
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin: 0;
+  padding: 0;
+  z-index: 10;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  
+  /* Propiedades para la animación */
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
+}
+
+.slider-btn.is-hidden {
+  opacity: 0;
+  transform: scale(0.75);
+  cursor: default;
+  pointer-events: none;
+}
+
+.slider-btn:hover {
+  background: var(--accent-color, #007bff);
+}
+
+.slider-viewport {
+  overflow: hidden;
+  flex: 1;
+  padding: 0 40px;
+  box-sizing: border-box;
+  margin: 0;
+  min-width: 0;
+  position: relative;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 40px,
+    black calc(100% - 40px),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 40px,
+    black calc(100% - 40px),
+    transparent 100%
+  );
+  transition: mask-image 0.3s ease, -webkit-mask-image 0.3s ease;
+}
+
+.slider-viewport.no-fade-left {
+  mask-image: linear-gradient(
+    to right,
+    black 0%,
+    black calc(100% - 40px),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    black 0%,
+    black calc(100% - 40px),
+    transparent 100%
+  );
+}
+
+.slider-viewport.no-fade-right {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 40px,
+    black 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 40px,
+    black 100%
+  );
+}
+
+.slider-viewport.no-fade {
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+.product-slider-list {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+  min-height: 420px;
+  transition: transform 0.5s ease-in-out;
+  padding: 5px 0;
+  margin: 0;
+  width: max-content;
+  position: relative;
+}
+
+.product-card {
+  min-width: 250px;
+  max-width: 250px;
+  flex: 0 0 250px;
+  margin: 0;
+  box-sizing: border-box;
+  position: relative;
+  transform: translateX(0);
+}
+
+/* --- Diseño Responsivo --- */
+
+@media (max-width: 900px) {
+  .product-slider-list {
+    gap: 0.5rem;
+  }
+  
+  .slider-viewport {
+    padding: 0 30px;
+  }
+  
+  .slider-wrapper {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .product-slider-title {
+    font-size: 1.15rem;
+  }
+  .slider-btn {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    min-width: 36px;
+  }
+  
+  .slider-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .slider-wrapper {
+    gap: 0.75rem;
+  }
+  
+  .slider-viewport {
+    padding: 0 20px;
+  }
+}

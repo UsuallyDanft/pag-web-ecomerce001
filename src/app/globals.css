@@ -1,3 +1,22 @@
+
+/* Reset básico y estilos globales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Roboto', 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 :root {
   /* Variables para tema claro */
   --bg-primary: #f1f1f1;
@@ -20,55 +39,91 @@
   --text-secondary: #a9b4c2;  /* Gris azulado claro */
   --border-color: #415a77;     /* Azul pizarra medio */
   --shadow-color: rgba(0, 0, 0, 0.3);
-  --accent-color: #63a4f9;     /* Azul brillante (sin cambios) */
-  --accent-hover: #4d7ee0;    /* Azul más oscuro para hover (sin cambios) */
-
-  /* La variable --bg-tertiary se eliminó porque era blanca y no encajaba 
-     con un tema oscuro. Si necesitas un color para elementos de alto contraste, 
-     puedes usar --text-primary o crear una nueva variable. */
+  --accent-color: #63a4f9;     /* Azul brillante */
+  --accent-hover: #4d7ee0;    /* Azul más oscuro para hover */
 }
 
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-  }
-  
-  html,
-  body {
-    max-width: 100vw;
-    overflow-x: hidden;
-  }
-  
-  body {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    transition: background-color 0.3s ease, color 0.3s ease;
-    -webkit-font-smoothing: antialiased; /* Para Chrome, Safari */
-    -moz-osx-font-smoothing: grayscale;  /* Para Firefox */
-  }
-  
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
+/* Layout básico */
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-  .page-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Altura mínima de toda la pantalla */
-    
+.content-wrap {
+  flex: 1;
+  padding: 0;
+}
 
-  }
-  
-  .content-wrap {
-    flex: 1; /* El contenido principal crece para empujar el footer */
-  }
+/* Estilos básicos para elementos comunes */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all 0.2s ease;
+}
 
-  body, button, input, textarea, select, h1, h2, h3, h4, h5, h6, p, div, span {
-    font-family: 'Montserrat', sans-serif;
-  }
+input, textarea, select {
+  font-family: inherit;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 8px 12px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
 
-  p {
-    font-family: 'Roboto', sans-serif;
-  }
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent-color);
+}
+
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+/* Utilidades básicas */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

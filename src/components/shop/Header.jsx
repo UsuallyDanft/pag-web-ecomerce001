@@ -121,7 +121,8 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Menú móvil */}
+        {/* Overlay y Menú móvil */}
+        <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`} onClick={closeMobileMenu}></div>
         <div ref={mobileMenuRef} className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
           <nav className="mobile-nav">
             <Link href="/" onClick={closeMobileMenu}>Inicio</Link>

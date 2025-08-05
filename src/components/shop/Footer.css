@@ -1,0 +1,33 @@
+
+.shop-footer {
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  padding: 2rem 0 1.5rem 0;
+  margin-top: auto;
+  color: var(--text-secondary);
+}
+
+.shop-footer .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.shop-footer p {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .shop-footer {
+    padding: 1.5rem 0 1rem 0;
+  }
+  
+  .shop-footer p {
+    font-size: 0.85rem;
+  }
+}

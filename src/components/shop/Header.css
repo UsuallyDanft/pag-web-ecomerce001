@@ -185,16 +185,145 @@
 }
 
  
-/* Ocultar elementos en pantallas más pequeñas (opcional, pero recomendado) */
+/* Botón del menú hamburguesa - oculto por defecto */
+.mobile-menu-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Menú móvil */
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  box-shadow: 0 5px 15px var(--shadow-color);
+  transform: translateY(-100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.mobile-menu.open {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.mobile-nav a {
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+  display: block;
+}
+
+.mobile-nav a:hover {
+  background-color: var(--accent-color);
+  color: white;
+  padding-left: 2.5rem;
+}
+
+.mobile-nav a:last-child {
+  border-bottom: none;
+}
+
+/* Responsive Design */
 @media (max-width: 1024px) {
-  .main-nav {
+  .desktop-nav {
     display: none;
   }
+  
+  .header-container {
+    padding: 0 1rem;
+  }
 }
- 
+
 @media (max-width: 768px) {
-  .header-center {
+  .shop-header {
+    padding: 0 1rem;
+  }
+  
+  .header-container {
+    height: 70px;
+    gap: 1rem;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+  }
+  
+  /* Mostrar botón hamburguesa en móvil */
+  .mobile-menu-btn {
+    display: flex;
+  }
+  
+  /* Ocultar acciones específicas en móvil */
+  .desktop-action {
     display: none;
+  }
+  
+  .header-actions {
+    gap: 1rem;
+  }
+  
+  /* Ajustar badge del carrito para móvil */
+  .cart-badge {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    height: 60px;
+    gap: 0.5rem;
+  }
+  
+  .logo {
+    font-size: 1.3rem;
+  }
+  
+  .header-actions {
+    gap: 0.75rem;
+  }
+  
+  .header-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .mobile-nav a {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .mobile-nav a:hover {
+    padding-left: 2rem;
   }
 }
 

@@ -1,4 +1,4 @@
-/* --- Overlay y Contenedor Principal --- */
+
 .cart-modal-overlay {
   position: fixed;
   top: 0;
@@ -30,7 +30,7 @@
   flex-direction: column;
   max-height: 90vh;
   animation: slideIn 0.4s ease-out;
-  overflow: hidden; /* Asegura que el footer respete los bordes redondeados */
+  overflow: hidden;
 }
 
 @keyframes slideIn {
@@ -38,7 +38,6 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* --- Header --- */
 .cart-modal-header {
   display: flex;
   justify-content: space-between;
@@ -87,7 +86,6 @@
   color: var(--text-primary);
 }
 
-/* --- Contenido del Carrito --- */
 .cart-modal-content {
   padding: 0;
   overflow-y: auto;
@@ -200,7 +198,6 @@
   align-self: center;
 }
 
-/* --- Estado de Carrito Vacío --- */
 .empty-cart {
   display: flex;
   flex-direction: column;
@@ -223,7 +220,6 @@
   margin-bottom: 0.5rem;
 }
 
-/* --- Footer --- */
 .cart-modal-footer {
   padding: 1rem 1.5rem;
   border-top: 1px solid var(--border-color);
@@ -255,7 +251,6 @@
   color: var(--accent-color);
 }
 
-/* --- Botones del Footer (Redondos y Distribuidos) --- */
 .cart-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;

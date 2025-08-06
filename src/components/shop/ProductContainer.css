@@ -85,48 +85,48 @@
 }
 
 .order-select {
-  padding: 0.75rem 1.25rem;
-  border-radius: 12px;
-  border: 2px solid transparent;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
   font-size: 1rem;
   font-weight: 500;
-  background: linear-gradient(135deg, #ffffff, #f8f9fa);
-  color: #2c3e50;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   outline: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px var(--shadow-color);
   transition: all 0.3s ease;
   cursor: pointer;
-  min-width: 180px;
+  min-width: 200px;
   appearance: none;
-  background-image: 
-    linear-gradient(135deg, #ffffff, #f8f9fa),
-    url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNiA2TDExIDEiIHN0cm9rZT0iIzZjNzU3ZCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+");
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNiA2TDExIDEiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==");
   background-repeat: no-repeat;
-  background-position: right 1rem center, left;
-  padding-right: 3rem;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
 }
 
 .order-select:hover {
-  border: 2px solid #3498db;
-  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.15);
+  border-color: var(--accent-color);
+  box-shadow: 0 4px 12px var(--shadow-color);
   transform: translateY(-1px);
 }
 
 .order-select:focus {
-  border: 2px solid #2980b9;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(var(--accent-color), 0.1);
   transform: translateY(-1px);
 }
 
 .order-select option {
-  padding: 0.5rem;
-  background: #ffffff;
-  color: #2c3e50;
+  padding: 0.75rem;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   font-weight: 500;
+  border: none;
 }
 
-.order-select option:hover {
-  background: #ecf0f1;
+.order-select option:checked {
+  background-color: var(--accent-color);
+  color: white;
 }
 
 .pagination {

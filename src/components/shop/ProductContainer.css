@@ -16,20 +16,22 @@
 
 .products-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 2rem;
   gap: 2rem;
   flex-wrap: wrap;
+  position: relative;
 }
 
 .products-header h2 {
   margin: 0;
-  flex: 1;
+  text-align: center;
 }
 
 .products-header select {
-  margin-left: auto;
+  position: absolute;
+  right: 0;
 }
 
 .products-list {

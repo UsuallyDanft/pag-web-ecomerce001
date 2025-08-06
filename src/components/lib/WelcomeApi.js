@@ -10,7 +10,7 @@ export async function getWelcomeData() {
     return { title, description };
   } else {
     return {
-      title: "Bienvenido a MiTienda",
+      title: "Bienvenido a Onovateth",
       description: "No se pudo cargar el contenido."
     };
   }

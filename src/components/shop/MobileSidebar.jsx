@@ -26,7 +26,7 @@ const MobileSidebar = ({ isOpen, onClose }) => {
         {/* Header */}
         <div className="mobile-sidebar-header">
           <div className="mobile-sidebar-logo">
-            <Link href="/" onClick={handleLinkClick}>MiTienda</Link>
+            <Link href="/" onClick={handleLinkClick}>Onovateth</Link>
           </div>
           <button className="mobile-sidebar-close" onClick={onClose}>
             <X size={20} />

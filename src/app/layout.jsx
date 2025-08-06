@@ -6,7 +6,7 @@ import { ThemeProvider } from '@/components/context/ThemeContext';
 import { CartProvider } from '@/components/context/CartContext';
 
 export const metadata = {
-  title: 'Mi Tienda Online',
+  title: 'Onovateth',
   description: 'Creada con Next.js',
 };
 

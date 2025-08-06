@@ -71,7 +71,7 @@ const Header = () => {
           <div className="desktop-header">
             <div className="header-left">
               <Link href="/" className="logo">
-                MiTienda
+                Onovateth
               </Link>
               <nav className="main-nav">
                 <Link href="/">Inicio</Link>
@@ -114,7 +114,7 @@ const Header = () => {
             </button>
 
             <Link href="/" className="mobile-logo">
-              MiTienda
+            Onovateth
             </Link>
 
             <button className="mobile-cart-btn" onClick={() => setCartOpen(true)} style={{ position: 'relative' }} aria-label="Ver carrito">

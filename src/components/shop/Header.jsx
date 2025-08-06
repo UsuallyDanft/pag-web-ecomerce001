@@ -10,6 +10,7 @@ import { useTheme } from '@/components/context/ThemeContext';
 import { useCart } from '@/components/context/CartContext';
 import CartModal from './CartModal';
 import CartSidebar from './CartSidebar';
+import MobileSidebar from './MobileSidebar';
 import gsap from 'gsap';
 
 const Header = () => {
@@ -66,64 +67,70 @@ const Header = () => {
     <>
       <header ref={headerRef} className={`shop-header ${isScrolled ? 'scrolled' : ''}`}>
         <div className="header-container">
-          {/* --- GRUPO 1: IZQUIERDA (Logo y Navegación) --- */}
-          <div className="header-left">
-            <Link href="/" className="logo">
-              MiTienda
-            </Link>
-            <nav className="main-nav">
-              <Link href="/">Inicio</Link>
-              <Link href="/categories">Categorías</Link>
-              <Link href="/contact">Contacto</Link>
-            </nav>
+          {/* --- VISTA DESKTOP --- */}
+          <div className="desktop-header">
+            <div className="header-left">
+              <Link href="/" className="logo">
+                MiTienda
+              </Link>
+              <nav className="main-nav">
+                <Link href="/">Inicio</Link>
+                <Link href="/categories">Categorías</Link>
+                <Link href="/contact">Contacto</Link>
+              </nav>
+            </div>
+
+            <div className="header-actions">
+              <Link href="/search">
+                <Search className="header-icon" />
+              </Link>
+              <button className="cart-btn" onClick={() => setCartOpen(true)} style={{ position: 'relative' }} aria-label="Ver carrito">
+                <ShoppingCart className="header-icon" />
+                {itemCount > 0 && (
+                  <span className="cart-badge">{itemCount}</span>
+                )}
+              </button>
+              <button 
+                onClick={toggleTheme}
+                className="theme-toggle-btn"
+                aria-label={isDarkMode ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'}
+              >
+                {isDarkMode ? <Sun className="header-icon" /> : <Moon className="header-icon" />}
+              </button>
+              <Link href="/login">
+                <User className="header-icon" />
+              </Link>
+            </div>
           </div>
 
-          {/* --- GRUPO 2: MENÚ MÓVIL (Solo visible en móvil) --- */}
-          <button 
-            className="mobile-menu-btn"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Abrir menú"
-          >
-            {mobileMenuOpen ? <X className="header-icon" /> : <Menu className="header-icon" />}
-          </button>
+          {/* --- VISTA MÓVIL --- */}
+          <div className="mobile-header">
+            <button 
+              className="mobile-menu-btn"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Abrir menú"
+            >
+              <Menu className="header-icon" />
+            </button>
 
-          {/* --- GRUPO 3: DERECHA (Acciones) --- */}
-          <div className="header-actions">
-            <Link href="/search">
-              <Search className="header-icon" />
+            <Link href="/" className="mobile-logo">
+              MiTienda
             </Link>
-            <button className="cart-btn" onClick={() => setCartOpen(true)} style={{ position: 'relative' }} aria-label="Ver carrito">
+
+            <button className="mobile-cart-btn" onClick={() => setCartOpen(true)} style={{ position: 'relative' }} aria-label="Ver carrito">
               <ShoppingCart className="header-icon" />
               {itemCount > 0 && (
                 <span className="cart-badge">{itemCount}</span>
               )}
             </button>
-            <button 
-              onClick={toggleTheme}
-              className="theme-toggle-btn"
-              aria-label={isDarkMode ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'}
-            >
-              {isDarkMode ? <Sun className="header-icon" /> : <Moon className="header-icon" />}
-            </button>
-            <Link href="/login">
-              <User className="header-icon" />
-            </Link>
           </div>
         </div>
       </header>
       
-      {/* Menú móvil desplegable */}
-      {mobileMenuOpen && (
-        <div className="mobile-menu-overlay" onClick={() => setMobileMenuOpen(false)}>
-          <nav className="mobile-menu" onClick={(e) => e.stopPropagation()}>
-            <Link href="/" onClick={() => setMobileMenuOpen(false)}>Inicio</Link>
-            <Link href="/categories" onClick={() => setMobileMenuOpen(false)}>Categorías</Link>
-            <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>Contacto</Link>
-            <Link href="/login" onClick={() => setMobileMenuOpen(false)}>Mi cuenta</Link>
-          </nav>
-        </div>
-      )}
+      {/* Menú lateral móvil */}
+      <MobileSidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
+      {/* Carrito */}
       {isMobile ? (
         <CartSidebar isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       ) : (

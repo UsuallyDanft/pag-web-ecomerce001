@@ -185,9 +185,33 @@
 }
 
  
+/* Vista desktop y móvil */
+.desktop-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 2rem;
+}
+
+.mobile-header {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Logo móvil */
+.mobile-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
 /* Botón de menú móvil */
 .mobile-menu-btn {
-  display: none;
   background: none;
   border: none;
   cursor: pointer;
@@ -200,61 +224,26 @@
   background-color: var(--border-color);
 }
 
-/* Menú móvil desplegable */
-.mobile-menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  z-index: 1999;
+/* Botón de carrito móvil */
+.mobile-cart-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding-top: 80px;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.mobile-menu {
-  background-color: var(--bg-secondary);
-  width: 250px;
-  height: fit-content;
-  border-radius: 0 15px 15px 0;
-  box-shadow: 0 10px 30px var(--shadow-color);
-  display: flex;
-  flex-direction: column;
-  animation: slideInFromLeft 0.3s ease-out;
+.mobile-cart-btn:hover {
+  transform: translateY(-2px);
 }
 
-@keyframes slideInFromLeft {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.mobile-menu a {
-  padding: 1rem 1.5rem;
-  color: var(--text-primary);
-  text-decoration: none;
-  border-bottom: 1px solid var(--border-color);
-  transition: background-color 0.2s;
-  font-weight: 500;
-}
-
-.mobile-menu a:hover {
-  background-color: var(--border-color);
-  color: var(--accent-color);
-}
-
-.mobile-menu a:last-child {
-  border-bottom: none;
-  border-radius: 0 0 15px 0;
+.mobile-cart-btn:hover .header-icon {
+  color: var(--accent-color) !important;
 }
 
 /* Ocultar elementos en pantallas más pequeñas */
@@ -262,11 +251,15 @@
   .main-nav {
     display: none;
   }
+}
+
+@media (max-width: 768px) {
+  .desktop-header {
+    display: none;
+  }
   
-  .mobile-menu-btn {
+  .mobile-header {
     display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }
  

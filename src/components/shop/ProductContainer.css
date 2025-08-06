@@ -30,7 +30,16 @@
     justify-items: center;
 }
 
-/* Responsivo para pantallas pequeñas */
+/* Responsivo para tablets */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .products-list {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+
+/* Responsivo para móviles */
 @media (max-width: 768px) {
     .products-list {
         grid-template-columns: 1fr;

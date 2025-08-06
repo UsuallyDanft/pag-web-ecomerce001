@@ -5,7 +5,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import './Header.css';
-import { ShoppingCart, User, Search, Sun, Moon } from 'lucide-react';
+import { ShoppingCart, User, Search, Sun, Moon, Menu, X } from 'lucide-react';
 import { useTheme } from '@/components/context/ThemeContext';
 import { useCart } from '@/components/context/CartContext';
 import CartModal from './CartModal';
@@ -18,6 +18,7 @@ const Header = () => {
   const { itemCount } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Refs para animación
   const headerRef = useRef(null);
@@ -77,6 +78,15 @@ const Header = () => {
             </nav>
           </div>
 
+          {/* --- GRUPO 2: MENÚ MÓVIL (Solo visible en móvil) --- */}
+          <button 
+            className="mobile-menu-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Abrir menú"
+          >
+            {mobileMenuOpen ? <X className="header-icon" /> : <Menu className="header-icon" />}
+          </button>
+
           {/* --- GRUPO 3: DERECHA (Acciones) --- */}
           <div className="header-actions">
             <Link href="/search">
@@ -101,6 +111,19 @@ const Header = () => {
           </div>
         </div>
       </header>
+      
+      {/* Menú móvil desplegable */}
+      {mobileMenuOpen && (
+        <div className="mobile-menu-overlay" onClick={() => setMobileMenuOpen(false)}>
+          <nav className="mobile-menu" onClick={(e) => e.stopPropagation()}>
+            <Link href="/" onClick={() => setMobileMenuOpen(false)}>Inicio</Link>
+            <Link href="/categories" onClick={() => setMobileMenuOpen(false)}>Categorías</Link>
+            <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>Contacto</Link>
+            <Link href="/login" onClick={() => setMobileMenuOpen(false)}>Mi cuenta</Link>
+          </nav>
+        </div>
+      )}
+
       {isMobile ? (
         <CartSidebar isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       ) : (

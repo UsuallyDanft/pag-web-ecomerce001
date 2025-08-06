@@ -15,10 +15,21 @@
 }
 
 .products-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.products-header h2 {
+  margin: 0;
+  flex: 1;
+}
+
+.products-header select {
+  margin-left: auto;
 }
 
 .products-list {

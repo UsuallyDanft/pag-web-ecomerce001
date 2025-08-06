@@ -1,4 +1,3 @@
-
 /* Reset básico y estilos globales */
 * {
   margin: 0;
@@ -12,9 +11,22 @@ html {
 }
 
 body {
+  margin: 0;
+  font-family: var(--font-montserrat), Arial, sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Layout para header fixed */
+.page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+.content-wrap {
+  padding-top: 0; /* El breadcrumb ya maneja el espaciado */
+  min-height: calc(100vh - 160px); /* Ajustar para header y footer */
 }
 
 :root {

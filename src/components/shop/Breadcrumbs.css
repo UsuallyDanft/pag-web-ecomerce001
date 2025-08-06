@@ -3,7 +3,7 @@
   padding: 1rem 2rem;
   background: transparent;
   border-bottom: none;
-  margin-top: 0;
+  margin-top: 80px; /* Espacio para el header */
   position: relative;
   z-index: 1;
   width: 100%;
@@ -59,7 +59,7 @@
 @media (max-width: 768px) {
   .breadcrumbs {
     padding: 1rem;
-    margin-top: 0;
+    margin-top: 70px; /* Menor espacio en móviles */
   }
   
   .breadcrumbs-list {
@@ -80,7 +80,7 @@
 @media (max-width: 480px) {
   .breadcrumbs {
     padding: 0.75rem;
-    margin-top: 0;
+    margin-top: 60px; /* Espacio ajustado para móviles pequeños */
   }
   
   .breadcrumbs-list {

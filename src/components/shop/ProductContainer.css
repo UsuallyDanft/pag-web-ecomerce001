@@ -15,8 +15,8 @@
 .products-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    column-gap: 1.2rem;
-    row-gap: 1.2rem;
+    column-gap: 0.8rem;
+    row-gap: 0.8rem;
 }
 
 .order-select {

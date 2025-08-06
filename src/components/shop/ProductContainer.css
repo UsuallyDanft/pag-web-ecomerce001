@@ -23,9 +23,9 @@
 
 .products-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    column-gap: 1.5rem;
-    row-gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    column-gap: 1rem;
+    row-gap: 1rem;
     justify-content: center;
     justify-items: center;
     width: 100%;
@@ -35,21 +35,21 @@
 @media (min-width: 1200px) {
     .products-list {
         grid-template-columns: repeat(4, 1fr);
-        max-width: 1200px;
+        max-width: 1300px;
         margin: 0 auto;
-        column-gap: 1.5rem;
-        row-gap: 1.5rem;
+        column-gap: 1rem;
+        row-gap: 1rem;
     }
 }
 
 /* Responsivo para tablets */
 @media (max-width: 1199px) and (min-width: 769px) {
     .products-list {
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        max-width: 900px;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        max-width: 950px;
         margin: 0 auto;
-        column-gap: 1rem;
-        row-gap: 1rem;
+        column-gap: 0.75rem;
+        row-gap: 0.75rem;
     }
 }
 

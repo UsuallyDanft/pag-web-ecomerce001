@@ -31,12 +31,14 @@
     width: 100%;
 }
 
-/* Pantallas grandes (escritorio) */
+/* Pantallas grandes (escritorio) - 4 columnas fijas */
 @media (min-width: 1200px) {
     .products-list {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        grid-template-columns: repeat(4, 1fr);
         max-width: 1200px;
         margin: 0 auto;
+        column-gap: 1.5rem;
+        row-gap: 1.5rem;
     }
 }
 

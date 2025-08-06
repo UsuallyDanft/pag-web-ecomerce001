@@ -73,13 +73,6 @@
   margin: 0;
 }
 
-.checkout-breadcrumbs .breadcrumbs {
-  margin: 0;
-  padding: 0;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
 /* Sección del carrito (40% del ancho) */
 .cart-section {
   flex: 0 0 40%;

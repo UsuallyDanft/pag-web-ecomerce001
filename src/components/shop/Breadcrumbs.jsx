@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -9,7 +10,6 @@ const Breadcrumbs = () => {
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
   
-  // Asegurar que el componente esté montado antes de usar hooks
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -19,7 +19,6 @@ const Breadcrumbs = () => {
     return null;
   }
 
-  // Crear las rutas del breadcrumb
   const generateBreadcrumbs = () => {
     const paths = pathname.split('/').filter(path => path !== '');
     const breadcrumbs = [
@@ -34,7 +33,6 @@ const Breadcrumbs = () => {
       // Mapear nombres más amigables para las rutas
       let displayName = path;
       
-      // Mapear rutas específicas
       const routeMappings = {
         'products': 'Productos',
         'categories': 'Categorías',
@@ -68,7 +66,6 @@ const Breadcrumbs = () => {
   // Manejar parámetros de búsqueda para categorías
   const categorySlug = searchParams.get('category');
   if (categorySlug && pathname === '/products') {
-    // Reemplazar el breadcrumb de "Productos" con la categoría específica
     const productsBreadcrumb = breadcrumbs.find(b => b.name === 'Productos');
     if (productsBreadcrumb) {
       productsBreadcrumb.name = categorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
@@ -100,4 +97,4 @@ const Breadcrumbs = () => {
   );
 };
 
-export default Breadcrumbs; 
+export default Breadcrumbs;

@@ -1,7 +1,7 @@
 import './globals.css';
-import Header from '@/components/shop/Header'; 
-import Footer from '@/components/shop/Footer'; 
-import BreadcrumbsWrapper from '@/components/shop/BreadcrumbsWrapper';
+import Header from '@/components/shop/Header';
+import Footer from '@/components/shop/Footer';
+import Breadcrumbs from '@/components/shop/Breadcrumbs'; // Importa el nuevo componente de Breadcrumbs
 import { ThemeProvider } from '@/components/context/ThemeContext';
 import { CartProvider } from '@/components/context/CartContext';
 
@@ -21,16 +21,16 @@ export default function RootLayout({ children }) {
         <ThemeProvider>
           <CartProvider>
             {/* 3. Agrega los contenedores para el layout */}
-            <div className="page-container"> 
-              <Header />  
-              <BreadcrumbsWrapper />
+            <div className="page-container">
+              <Header />
+              <Breadcrumbs /> {/* Se incluye el componente de Breadcrumbs aquí */}
               <main className="content-wrap">
                 {children}
               </main>
               <Footer />
             </div>
-          </CartProvider>
-        </ThemeProvider>
+          </ThemeProvider>
+        </CartProvider>
       </body>
     </html>
   );

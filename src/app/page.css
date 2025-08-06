@@ -46,3 +46,22 @@
 .presentBnButton:hover{
     background-color: #63a4f9;
 }
+
+/* Estilos para el contenedor del banner publicitario */
+.BannerImage {
+    width: 100%;
+    display: flex; /* Para centrar la imagen fácilmente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente (si tuviera alto fijo) */
+    margin: 4rem 0; /* Añade un espacio considerable arriba y abajo */
+    padding: 0 1rem; /* Evita que la imagen toque los bordes en pantallas pequeñas */
+  }
+  
+  /* Estilos para la imagen dentro del contenedor */
+  .BannerImage img {
+    max-width: 100%; /* La imagen nunca será más ancha que su contenedor */
+    width: 90%; /* Ocupa el 90% del ancho del contenedor */
+    height: auto; /* Mantiene la proporción de la imagen */
+    border-radius: 15px; /* Bordes redondeados para un look moderno */
+    box-shadow: 0 10px 25px var(--shadow-color); /* Sombra similar al botón */
+  }

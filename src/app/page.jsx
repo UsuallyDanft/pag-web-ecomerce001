@@ -6,19 +6,27 @@ import ProductSlider from '@/components/shop/ProductSlider';
 import './page.css';
 import { getSliderProductsNewTag } from '@/components/lib/SliderApiNewTag';
 import { getWelcomeData } from '@/components/lib/WelcomeApi';
+import { getBannerImageUrl } from '@/components/lib/BannerHomeApi';
 
 export default function Page() {
   const [welcomeData, setWelcomeData] = useState({ title: "", description: "" });
   const [productos, setProductos] = useState([]);
+  
+  const [bannerImageUrl, setBannerImageUrl] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     const cargarDatos = async () => {
+      // Las llamadas existentes no cambian
       const welcomeDataObtenida = await getWelcomeData();
       setWelcomeData(welcomeDataObtenida);
       
       const productosObtenidos = await getSliderProductsNewTag();
       setProductos(productosObtenidos);
+
+      // 3. LLAMAR a la API para obtener la URL de la imagen
+      const imageUrl = await getBannerImageUrl();
+    setBannerImageUrl(imageUrl);
     };
 
     cargarDatos();
@@ -27,6 +35,7 @@ export default function Page() {
   return (
     <div>
       <div className='presentBanner'>
+        {/* ... banner de bienvenida ... */}
         <div className='textBanner'>
           <h1>{welcomeData.title}</h1>
           <p>{welcomeData.description}</p>
@@ -36,10 +45,15 @@ export default function Page() {
             Explorar
           </button>
         </Link>
-        
       </div>
+
+      {/* banner de imagen publicitaria */}
+      {bannerImageUrl && (
+  <div className='BannerImage'>
+    <img src={bannerImageUrl} alt="Banner publicitario" />
+  </div>
+)}
       
-      {/* Sección del Slider de Añadidos Recientemente */}
       <ProductSlider
         title="Añadidos Recientemente"
         products={productos}

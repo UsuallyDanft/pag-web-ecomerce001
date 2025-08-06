@@ -9,6 +9,7 @@ import { ShoppingCart, User, Search, Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/components/context/ThemeContext';
 import { useCart } from '@/components/context/CartContext';
 import CartModal from './CartModal';
+import CartSidebar from './CartSidebar';
 import gsap from 'gsap';
 
 const Header = () => {
@@ -16,6 +17,7 @@ const Header = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const { itemCount } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Refs para animación
   const headerRef = useRef(null);
@@ -29,9 +31,20 @@ const Header = () => {
         setIsScrolled(false);
       }
     };
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Detectar tamaño inicial
+    handleResize();
+
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+    
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -88,7 +101,11 @@ const Header = () => {
           </div>
         </div>
       </header>
-      <CartModal isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      {isMobile ? (
+        <CartSidebar isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      ) : (
+        <CartModal isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      )}
     </>
   );
 };

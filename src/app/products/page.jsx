@@ -131,7 +131,16 @@ export default function ProductsPage() {
   };
 
   if (loading) {
-    return <p style={{ textAlign: 'center'  }}>Cargando productos...</p>;
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '50vh' 
+      }}>
+        <p>Cargando productos...</p>
+      </div>
+    );
   }
 
   return (

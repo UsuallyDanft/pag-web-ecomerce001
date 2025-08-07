@@ -12,12 +12,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <head>
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet" />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <ThemeProvider>
           <CartProvider>
             {/* 3. Agrega los contenedores para el layout */}

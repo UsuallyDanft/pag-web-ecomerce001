@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductCard from './ProductCard'; // Importamos el componente de la tarjeta
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Filter, SortAsc } from 'lucide-react';
 import './ProductContainer.css'; // Corrige el nombre del archivo de estilos
 
 const ProductContainer = ({
@@ -21,24 +21,30 @@ const ProductContainer = ({
       <div className="products-header">
         {title && <h2>{title}</h2>}
         <div className="product-controls">
-          <select
-            className="category-select"
-            value={currentCategory === null ? '' : currentCategory || ''}
-            onChange={(e) => onCategoryChange(e.target.value === '' ? null : e.target.value)}
-          >
-            <option value="">Todos los productos</option>
-            {categories.filter(category => category.attributes && category.attributes.slug && category.attributes.name).map((category) => (
-              <option key={category.id} value={category.attributes.slug}>
-                {category.attributes.name}
-              </option>
-            ))}
-          </select>
+          <div className="select-wrapper">
+            <Filter className="select-icon" />
+            <select
+              className="category-select"
+              value={currentCategory === null ? '' : currentCategory || ''}
+              onChange={(e) => onCategoryChange(e.target.value === '' ? null : e.target.value)}
+            >
+              <option value="">Todos los productos</option>
+              {categories.filter(category => category.attributes && category.attributes.slug && category.attributes.name).map((category) => (
+                <option key={category.id} value={category.attributes.slug}>
+                  {category.attributes.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-          <select className="order-select" value={currentSort} onChange={e => onSortChange(e.target.value)}>
-            {sortOptions.map(option => (
-              <option key={option.value} value={option.value}>{option.label}</option>
-            ))}
-          </select>
+          <div className="select-wrapper">
+            <SortAsc className="select-icon" />
+            <select className="order-select" value={currentSort} onChange={e => onSortChange(e.target.value)}>
+              {sortOptions.map(option => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
       <div className="products-list">

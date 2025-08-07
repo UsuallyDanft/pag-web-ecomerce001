@@ -48,15 +48,18 @@
 @media (max-width: 768px) {
   .product-controls {
     flex-direction: row;
-    gap: 0.5rem;
+    gap: 0.75rem;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    margin-bottom: 1.5rem;
   }
 
   .select-wrapper {
     position: relative;
     flex: 1;
-    max-width: 150px;
+    min-width: 120px;
+    max-width: 160px;
   }
 
   .select-icon {
@@ -66,7 +69,7 @@
     transform: translateY(-50%);
     width: 18px;
     height: 18px;
-    color: var(--text-secondary);
+    color: var(--text-primary);
     pointer-events: none;
     z-index: 1;
     display: block;
@@ -74,18 +77,36 @@
 
   .category-select,
   .order-select {
-    min-width: auto;
     width: 100%;
-    padding-left: 2.5rem;
-    padding-right: 2rem;
+    height: 48px;
+    padding: 0.75rem 2.5rem 0.75rem 3rem;
+    border: 2px solid var(--border-color);
+    border-radius: 25px;
+    background-color: var(--bg-secondary);
+    color: transparent;
     font-size: 0;
-    text-indent: -9999px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    transition: all 0.3s ease;
+  }
+
+  .category-select:focus,
+  .order-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.1);
   }
 
   .category-select option,
   .order-select option {
     font-size: 14px;
-    text-indent: 0;
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+    padding: 0.5rem;
   }
 
   .product-grid {

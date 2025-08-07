@@ -130,6 +130,17 @@
   -webkit-mask-image: none;
 }
 
+/* Desactivar efecto de difuminado en móviles */
+@media (max-width: 600px) {
+  .slider-viewport,
+  .slider-viewport.no-fade-left,
+  .slider-viewport.no-fade-right,
+  .slider-viewport.no-fade {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
+}
+
 .product-slider-list {
   display: flex;
   gap: 1rem;

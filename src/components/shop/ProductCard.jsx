@@ -70,6 +70,18 @@ const ProductCard = ({ product }) => {
         onClick={handleImageClick}
       />
       
+      {/* Indicador de imágenes */}
+      {allImages.length > 1 && (
+        <div className="image-indicator">
+          {allImages.map((_, index) => (
+            <div
+              key={index}
+              className={`indicator-dot ${index === currentImageIndex ? 'active' : ''}`}
+            />
+          ))}
+        </div>
+      )}
+      
       <div className="product-info">
         <h3 className="product-name">{name}</h3>
         <p className="product-price">${price.toFixed(2)}</p>

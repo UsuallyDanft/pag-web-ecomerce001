@@ -39,6 +39,38 @@
   .product-image:hover{
     transform: scale(1.03);
   }
+
+  /* Indicador de imágenes */
+  .image-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 0;
+    background-color: var(--bg-secondary);
+  }
+
+  .indicator-dot {
+    width: 20px;
+    height: 2px;
+    background-color: var(--border-color);
+    border-radius: 1px;
+    transition: background-color 0.3s ease;
+  }
+
+  .indicator-dot.active {
+    background-color: #007bff;
+  }
+
+  @media (max-width: 600px) {
+    .image-indicator {
+      padding: 6px 0;
+    }
+    
+    .indicator-dot {
+      width: 16px;
+      height: 1.5px;
+    }
+  }
   
   .product-info {
     background-color: var(--bg-secondary);

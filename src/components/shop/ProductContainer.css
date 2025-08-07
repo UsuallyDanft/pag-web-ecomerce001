@@ -58,21 +58,12 @@
   .select-wrapper {
     position: relative;
     flex: 1;
-    min-width: 120px;
-    max-width: 160px;
+    min-width: 140px;
+    max-width: 180px;
   }
 
   .select-icon {
-    position: absolute;
-    left: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    color: var(--text-primary);
-    pointer-events: none;
-    z-index: 1;
-    display: block;
+    display: none;
   }
 
   .category-select,
@@ -93,8 +84,9 @@
     background-repeat: no-repeat;
     box-shadow: 0 2px 8px var(--shadow-color);
     transition: all 0.3s ease;
-    color: transparent;
-    text-indent: -9999px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
   }
 
   .dark .category-select,

@@ -1,0 +1,52 @@
+Error: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload assetPrefix="" globalError={[...]}>
+      <AppDevOverlay state={{nextId:1, ...}} globalError={[...]}>
+        <AppDevOverlayErrorBoundary globalError={[...]} onError={function bound dispatchSetState}>
+          <ReplaySsrOnlyErrors>
+          <DevRootHTTPAccessFallbackBoundary>
+            <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+              <HTTPAccessFallbackErrorBoundary pathname="/products" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+                <RedirectBoundary>
+                  <RedirectErrorBoundary router={{...}}>
+                    <Head>
+                    <link>
+                    <script>
+                    <script>
+                    <script>
+                    <RootLayout>
+                      <html
+                        lang="es"
+-                       data-lt-installed="true"
+                      >
+                    ...
+        ...
+
+    at createConsoleError (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_client_8f19e6fb._.js:882:71)
+    at handleConsoleError (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_client_8f19e6fb._.js:1058:54)
+    at console.error (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_client_8f19e6fb._.js:1223:57)
+    at https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:5153:25
+    at runWithFiberInDEV (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:3073:74)
+    at emitPendingHydrationWarnings (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:5152:13)
+    at completeWork (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:8331:102)
+    at runWithFiberInDEV (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:3073:131)
+    at completeUnitOfWork (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:10308:23)
+    at performUnitOfWork (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:10245:28)
+    at workLoopConcurrentByScheduler (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:10239:58)
+    at renderRootConcurrent (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:10221:71)
+    at performWorkOnRoot (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:9853:176)
+    at performWorkOnRootViaSchedulerTask (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:10826:9)
+    at MessagePort.performWorkUntilDeadline (https://0db71553-4698-49df-9b59-49494475c427-00-3fkfb5lomk8iw.riker.replit.dev/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js:1982:64)
+    at html (<anonymous>)
+    at RootLayout (rsc://React/Server/file:///home/runner/workspace/.next/server/chunks/ssr/_a6af75c2._.js?14:240:263)

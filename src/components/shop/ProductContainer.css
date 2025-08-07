@@ -43,6 +43,27 @@
     width: 100%;
 }
 
+/* --- Diseño Responsivo --- */
+
+@media (max-width: 768px) {
+  .product-controls {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .category-select,
+  .order-select {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
 /* Pantallas grandes (escritorio) - 4 columnas fijas */
 @media (min-width: 1200px) {
     .products-list {
@@ -175,4 +196,30 @@
 
 .pagination-btn:not(:disabled):hover svg {
   color: var(--bg-secondary);
+}
+
+.product-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.category-select,
+.order-select {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 50px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  color: var(--text-primary);
+  font-weight: 500;
+  min-width: 180px;
+}
+
+.category-select {
+  min-width: 200px;
 }

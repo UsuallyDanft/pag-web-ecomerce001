@@ -12,18 +12,34 @@ const ProductContainer = ({
   currentPage = 1,
   totalPages = 1,
   onPageChange = () => {},
+  categories = [],
+  currentCategory,
+  onCategoryChange
 }) => {
   return (
     <div className="products-container">
       <div className="products-header">
         {title && <h2>{title}</h2>}
-        {sortOptions.length > 0 && (
+        <div className="product-controls">
+          <select
+            className="category-select"
+            value={currentCategory || ''}
+            onChange={(e) => onCategoryChange(e.target.value || null)}
+          >
+            <option value="">Todas las categorías</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.attributes.slug}>
+                {category.attributes.name}
+              </option>
+            ))}
+          </select>
+
           <select className="order-select" value={currentSort} onChange={e => onSortChange(e.target.value)}>
             {sortOptions.map(option => (
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </select>
-        )}
+        </div>
       </div>
       <div className="products-list">
         {products.map(product => (

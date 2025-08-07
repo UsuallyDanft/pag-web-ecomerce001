@@ -14,24 +14,42 @@ const PAGE_SIZE = 8; // Aumentamos el tamaño de página para la página de prod
 
 export default function ProductsPage() {
   const [productos, setProductos] = useState([]);
+  const [categorias, setCategorias] = useState([]);
   const [currentSort, setCurrentSort] = useState('price-asc');
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentCategory, setCurrentCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   
   // 2. Obtén los parámetros de la URL
   const searchParams = useSearchParams();
   const categorySlug = searchParams.get('category'); // Obtiene el valor de 'category'
 
-  // useEffect para obtener productos, dependiente de categorySlug
+  // useEffect para obtener categorías
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await queryAPI('/api/categories?populate=*');
+        if (data && data.data) {
+          setCategorias(data.data);
+        }
+      } catch (error) {
+        console.error("Error al cargar las categorías:", error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  // useEffect para obtener productos, dependiente de categorySlug y currentCategory
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
         // 3. Construye la ruta de la API dinámicamente
         let apiPath = '/api/products?populate=*';
-        if (categorySlug) {
+        const activeCategory = currentCategory || categorySlug;
+        if (activeCategory) {
           // Si hay un slug de categoría, añade el filtro a la ruta
-          apiPath += `&filters[categories][slug][$eq]=${categorySlug}`;
+          apiPath += `&filters[categories][slug][$eq]=${activeCategory}`;
         }
         const data = await queryAPI(apiPath);
         console.log("=== RESPUESTA CRUDA DE PRODUCTOS ===", data.data);
@@ -83,7 +101,7 @@ export default function ProductsPage() {
       }
     };
     fetchProducts();
-  }, [categorySlug]); // 4. El efecto se ejecuta de nuevo si 'categorySlug' cambia
+  }, [categorySlug, currentCategory]); // 4. El efecto se ejecuta de nuevo si 'categorySlug' o 'currentCategory' cambia
 
   // Ordenar productos
   const sortedProducts = [...productos].sort((a, b) => {
@@ -106,6 +124,12 @@ export default function ProductsPage() {
     setCurrentPage(1);
   };
 
+  // Cambiar de categoría reinicia la página
+  const handleCategoryChange = (category) => {
+    setCurrentCategory(category);
+    setCurrentPage(1);
+  };
+
   if (loading) {
     return <p style={{ textAlign: 'center'  }}>Cargando productos...</p>;
   }
@@ -122,13 +146,17 @@ export default function ProductsPage() {
           marginBottom: '1rem', 
           color: 'var(--text-primary)'
         }}>
-          {categorySlug ? categorySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Todos los Productos'}
+          {(currentCategory || categorySlug) ? 
+            (currentCategory || categorySlug).replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 
+            'Todos los Productos'}
         </h1>
         <p style={{ 
           fontSize: '1.2rem', 
           color: 'var(--text-secondary)'
         }}>
-          {categorySlug ? `Explora los productos de la categoría: ${categorySlug.replace(/-/g, ' ')}` : 'Explora nuestra amplia selección de productos de calidad.'}
+          {(currentCategory || categorySlug) ? 
+            `Explora los productos de la categoría: ${(currentCategory || categorySlug).replace(/-/g, ' ')}` : 
+            'Explora nuestra amplia selección de productos de calidad.'}
         </p>
       </div>
       <ProductContainer
@@ -140,6 +168,9 @@ export default function ProductsPage() {
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
+        categories={categorias}
+        currentCategory={currentCategory || categorySlug}
+        onCategoryChange={handleCategoryChange}
       />
     </div>
   );

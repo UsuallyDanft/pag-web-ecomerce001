@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductCard from './ProductCard'; // Importamos el componente de la tarjeta
-import { ArrowLeft, ArrowRight, Filter, SortAsc } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import './ProductContainer.css'; // Corrige el nombre del archivo de estilos
 
 const ProductContainer = ({
@@ -22,7 +22,6 @@ const ProductContainer = ({
         {title && <h2>{title}</h2>}
         <div className="product-controls">
           <div className="select-wrapper">
-            <Filter className="select-icon" />
             <select
               className="category-select"
               value={currentCategory === null ? '' : currentCategory || ''}
@@ -39,7 +38,6 @@ const ProductContainer = ({
           </div>
 
           <div className="select-wrapper">
-            <SortAsc className="select-icon" />
             <select 
               className="order-select" 
               value={currentSort} 

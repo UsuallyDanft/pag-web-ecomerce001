@@ -27,6 +27,7 @@ const ProductContainer = ({
               className="category-select"
               value={currentCategory === null ? '' : currentCategory || ''}
               onChange={(e) => onCategoryChange(e.target.value === '' ? null : e.target.value)}
+              title="Filtrar por categoría"
             >
               <option value="">Todos los productos</option>
               {categories.filter(category => category.attributes && category.attributes.slug && category.attributes.name).map((category) => (
@@ -39,7 +40,12 @@ const ProductContainer = ({
 
           <div className="select-wrapper">
             <SortAsc className="select-icon" />
-            <select className="order-select" value={currentSort} onChange={e => onSortChange(e.target.value)}>
+            <select 
+              className="order-select" 
+              value={currentSort} 
+              onChange={e => onSortChange(e.target.value)}
+              title="Ordenar productos"
+            >
               {sortOptions.map(option => (
                 <option key={option.value} value={option.value}>{option.label}</option>
               ))}

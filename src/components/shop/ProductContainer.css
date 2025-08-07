@@ -79,19 +79,27 @@
   .order-select {
     width: 100%;
     height: 48px;
-    padding: 0.75rem 2.5rem 0.75rem 3rem;
+    padding: 0 2.5rem 0 3rem;
     border: 2px solid var(--border-color);
     border-radius: 25px;
     background-color: var(--bg-secondary);
-    color: transparent;
-    font-size: 0;
     cursor: pointer;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg fill='%23666' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-size: 1.2em;
+    background-repeat: no-repeat;
     box-shadow: 0 2px 8px var(--shadow-color);
     transition: all 0.3s ease;
+    color: transparent;
+    text-indent: -9999px;
+  }
+
+  .dark .category-select,
+  .dark .order-select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg fill='%23a9b4c2' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
   }
 
   .category-select:focus,
@@ -107,6 +115,7 @@
     color: var(--text-primary);
     background-color: var(--bg-secondary);
     padding: 0.5rem;
+    text-indent: 0;
   }
 
   .product-grid {

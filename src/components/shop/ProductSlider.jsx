@@ -7,9 +7,9 @@ import './ProductSlider.css';
 
 const getVisibleCount = () => {
   if (typeof window === 'undefined') return 5;
-  if (window.innerWidth < 600) return 1;
-  if (window.innerWidth < 900) return 2;
-  if (window.innerWidth < 1200) return 3;
+  if (window.innerWidth < 600) return 3;
+  if (window.innerWidth < 900) return 3;
+  if (window.innerWidth < 1200) return 4;
   return 5;
 };
 
@@ -65,9 +65,16 @@ const ProductSlider = ({ title, products }) => {
     }
   };
   
-  // Tamaño fijo para las tarjetas
-  const cardWidth = 250;
-  const gapWidth = 16;
+  // Tamaño dinámico para las tarjetas según el viewport
+  const getCardWidth = () => {
+    if (typeof window === 'undefined') return 250;
+    if (window.innerWidth < 600) return Math.floor((window.innerWidth - 120) / 3); // 3 tarjetas en móvil
+    if (window.innerWidth < 900) return 220;
+    return 250;
+  };
+  
+  const cardWidth = getCardWidth();
+  const gapWidth = window.innerWidth < 600 ? 8 : 16;
   const totalCardWidth = cardWidth + gapWidth;
   
   const sliderStyles = {

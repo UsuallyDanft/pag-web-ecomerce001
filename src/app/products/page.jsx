@@ -47,17 +47,22 @@ export default function ProductsPage() {
             }
           });
 
-          // Filtrar categorías que tengan las propiedades necesarias
-          const validCategories = data.data.filter(category => {
-            const hasAttributes = category.attributes;
-            const hasSlug = category.attributes?.slug;
-            const hasName = category.attributes?.name;
-            console.log(`Categoría ${category.id}: attributes=${!!hasAttributes}, slug=${!!hasSlug}, name=${!!hasName}`);
-            return hasAttributes && hasSlug && hasName;
+          // Transformar categorías para que tengan la estructura esperada
+          const transformedCategories = data.data.map(category => {
+            console.log(`Transformando categoría ${category.id}:`, category);
+            return {
+              id: category.id,
+              attributes: {
+                slug: category.slug,
+                name: category.name,
+                description: category.description,
+                image: category.image
+              }
+            };
           });
 
-          console.log(`Categorías válidas: ${validCategories.length}`, validCategories);
-          setCategorias(validCategories);
+          console.log(`Categorías transformadas: ${transformedCategories.length}`, transformedCategories);
+          setCategorias(transformedCategories);
         } else {
           console.log("No se encontraron datos de categorías:", data);
           setCategorias([]);

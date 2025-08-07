@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import ProductContainer from '@/components/shop/ProductContainer';
 import { queryAPI } from '@/components/lib/strapi';
-import { useSearchParams } from 'next/navigation'; // 1. Importa useSearchParams
 
 const sortOptions = [
   { value: 'price-asc', label: 'Precio: menor a mayor' },
@@ -19,7 +19,7 @@ export default function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentCategory, setCurrentCategory] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   // 2. Obtén los parámetros de la URL
   const searchParams = useSearchParams();
   const categorySlug = searchParams.get('category'); // Obtiene el valor de 'category'
@@ -31,10 +31,10 @@ export default function ProductsPage() {
         console.log("=== INICIANDO CARGA DE CATEGORÍAS ===");
         const data = await queryAPI('/api/categories?populate=*');
         console.log("=== RESPUESTA CRUDA DE CATEGORÍAS ===", JSON.stringify(data, null, 2));
-        
+
         if (data && data.data) {
           console.log(`Total de categorías recibidas: ${data.data.length}`);
-          
+
           // Mostrar cada categoría para debug
           data.data.forEach((category, index) => {
             console.log(`Categoría ${index}:`, category);
@@ -46,7 +46,7 @@ export default function ProductsPage() {
               console.log(`- Description: ${category.attributes.description}`);
             }
           });
-          
+
           // Filtrar categorías que tengan las propiedades necesarias
           const validCategories = data.data.filter(category => {
             const hasAttributes = category.attributes;
@@ -55,7 +55,7 @@ export default function ProductsPage() {
             console.log(`Categoría ${category.id}: attributes=${!!hasAttributes}, slug=${!!hasSlug}, name=${!!hasName}`);
             return hasAttributes && hasSlug && hasName;
           });
-          
+
           console.log(`Categorías válidas: ${validCategories.length}`, validCategories);
           setCategorias(validCategories);
         } else {
@@ -90,7 +90,7 @@ export default function ProductsPage() {
             const attributes = product.attributes || product;
             let imageUrl = '/placeholder.png';
             let allImages = [];
-            
+
             if (attributes.images && attributes.images.length > 0) {
               // Procesar todas las imágenes del producto
               allImages = attributes.images.map(img => {
@@ -99,13 +99,13 @@ export default function ProductsPage() {
                 }
                 return null;
               }).filter(url => url !== null);
-              
+
               // Usar la primera imagen como imagen principal
               if (allImages.length > 0) {
                 imageUrl = allImages[0];
               }
             }
-            
+
             console.log('Producto:', attributes.name, 'URL de imagen:', imageUrl, 'Todas las imágenes:', allImages);
             const categories = attributes.categories || [];
             return {

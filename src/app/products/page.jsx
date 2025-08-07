@@ -83,10 +83,11 @@ export default function ProductsPage() {
         // 3. Construye la ruta de la API dinámicamente
         let apiPath = '/api/products?populate=*';
         const activeCategory = currentCategory || categorySlug;
-        if (activeCategory) {
-          // Si hay un slug de categoría, añade el filtro a la ruta
+        if (activeCategory && activeCategory !== '') {
+          // Si hay un slug de categoría válido, añade el filtro a la ruta
           apiPath += `&filters[categories][slug][$eq]=${activeCategory}`;
         }
+        // Si no hay activeCategory o está vacío, traerá todos los productos
         const data = await queryAPI(apiPath);
         console.log("=== RESPUESTA CRUDA DE PRODUCTOS ===", data.data);
         if (data && data.data) {
@@ -162,7 +163,8 @@ export default function ProductsPage() {
 
   // Cambiar de categoría reinicia la página
   const handleCategoryChange = (category) => {
-    setCurrentCategory(category);
+    // Si category es una string vacía o null, establecer como null para mostrar todos los productos
+    setCurrentCategory(category === '' ? null : category);
     setCurrentPage(1);
   };
 
@@ -191,15 +193,15 @@ export default function ProductsPage() {
           marginBottom: '1rem', 
           color: 'var(--text-primary)'
         }}>
-          {(currentCategory || categorySlug) ? 
-            (currentCategory || categorySlug).replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 
+          {(currentCategory && currentCategory !== '') || (categorySlug && categorySlug !== '') ? 
+            ((currentCategory || categorySlug).replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())) : 
             'Todos los Productos'}
         </h1>
         <p style={{ 
           fontSize: '1.2rem', 
           color: 'var(--text-secondary)'
         }}>
-          {(currentCategory || categorySlug) ? 
+          {(currentCategory && currentCategory !== '') || (categorySlug && categorySlug !== '') ? 
             `Explora los productos de la categoría: ${(currentCategory || categorySlug).replace(/-/g, ' ')}` : 
             'Explora nuestra amplia selección de productos de calidad.'}
         </p>

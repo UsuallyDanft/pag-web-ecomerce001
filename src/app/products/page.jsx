@@ -29,13 +29,26 @@ export default function ProductsPage() {
     const fetchCategories = async () => {
       try {
         const data = await queryAPI('/api/categories?populate=*');
+        console.log("=== RESPUESTA CRUDA DE CATEGORÍAS ===", data);
         if (data && data.data) {
+          // Mostrar cada categoría para debug
+          data.data.forEach((category, index) => {
+            console.log(`Categoría ${index}:`, category);
+            console.log(`- Attributes:`, category.attributes);
+            console.log(`- Slug:`, category.attributes?.slug);
+            console.log(`- Name:`, category.attributes?.name);
+          });
+          
           // Filtrar categorías que tengan las propiedades necesarias
-          const validCategories = data.data.filter(category => 
-            category.attributes && 
-            category.attributes.slug && 
-            category.attributes.name
-          );
+          const validCategories = data.data.filter(category => {
+            const hasAttributes = category.attributes;
+            const hasSlug = category.attributes?.slug;
+            const hasName = category.attributes?.name;
+            console.log(`Categoría ${category.id}: attributes=${!!hasAttributes}, slug=${!!hasSlug}, name=${!!hasName}`);
+            return hasAttributes && hasSlug && hasName;
+          });
+          
+          console.log("Categorías válidas:", validCategories);
           setCategorias(validCategories);
         }
       } catch (error) {

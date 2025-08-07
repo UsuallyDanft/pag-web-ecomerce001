@@ -23,8 +23,8 @@ const ProductContainer = ({
         <div className="product-controls">
           <select
             className="category-select"
-            value={currentCategory || ''}
-            onChange={(e) => onCategoryChange(e.target.value || null)}
+            value={currentCategory === null ? '' : currentCategory || ''}
+            onChange={(e) => onCategoryChange(e.target.value === '' ? null : e.target.value)}
           >
             <option value="">Todos los productos</option>
             {categories.filter(category => category.attributes && category.attributes.slug && category.attributes.name).map((category) => (

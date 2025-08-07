@@ -28,15 +28,23 @@ export default function ProductsPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        console.log("=== INICIANDO CARGA DE CATEGORÍAS ===");
         const data = await queryAPI('/api/categories?populate=*');
-        console.log("=== RESPUESTA CRUDA DE CATEGORÍAS ===", data);
+        console.log("=== RESPUESTA CRUDA DE CATEGORÍAS ===", JSON.stringify(data, null, 2));
+        
         if (data && data.data) {
+          console.log(`Total de categorías recibidas: ${data.data.length}`);
+          
           // Mostrar cada categoría para debug
           data.data.forEach((category, index) => {
             console.log(`Categoría ${index}:`, category);
+            console.log(`- ID: ${category.id}`);
             console.log(`- Attributes:`, category.attributes);
-            console.log(`- Slug:`, category.attributes?.slug);
-            console.log(`- Name:`, category.attributes?.name);
+            if (category.attributes) {
+              console.log(`- Slug: ${category.attributes.slug}`);
+              console.log(`- Name: ${category.attributes.name}`);
+              console.log(`- Description: ${category.attributes.description}`);
+            }
           });
           
           // Filtrar categorías que tengan las propiedades necesarias
@@ -48,11 +56,15 @@ export default function ProductsPage() {
             return hasAttributes && hasSlug && hasName;
           });
           
-          console.log("Categorías válidas:", validCategories);
+          console.log(`Categorías válidas: ${validCategories.length}`, validCategories);
           setCategorias(validCategories);
+        } else {
+          console.log("No se encontraron datos de categorías:", data);
+          setCategorias([]);
         }
       } catch (error) {
         console.error("Error al cargar las categorías:", error);
+        setCategorias([]);
       }
     };
     fetchCategories();

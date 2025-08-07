@@ -148,9 +148,9 @@
 
 @media (max-width: 600px) {
   .product-card {
-    min-width: calc((100vw - 120px) / 3);
-    max-width: calc((100vw - 120px) / 3);
-    flex: 0 0 calc((100vw - 120px) / 3);
+    min-width: calc((100vw - 120px) / 1);
+    max-width: calc((100vw - 120px) / 1);
+    flex: 0 0 calc((100vw - 120px) / 1);
   }
 }
 

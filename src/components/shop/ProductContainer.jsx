@@ -27,7 +27,7 @@ const ProductContainer = ({
             onChange={(e) => onCategoryChange(e.target.value || null)}
           >
             <option value="">Todas las categorías</option>
-            {categories.map((category) => (
+            {categories.filter(category => category.attributes && category.attributes.slug && category.attributes.name).map((category) => (
               <option key={category.id} value={category.attributes.slug}>
                 {category.attributes.name}
               </option>

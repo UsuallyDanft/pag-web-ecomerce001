@@ -30,7 +30,13 @@ export default function ProductsPage() {
       try {
         const data = await queryAPI('/api/categories?populate=*');
         if (data && data.data) {
-          setCategorias(data.data);
+          // Filtrar categorías que tengan las propiedades necesarias
+          const validCategories = data.data.filter(category => 
+            category.attributes && 
+            category.attributes.slug && 
+            category.attributes.name
+          );
+          setCategorias(validCategories);
         }
       } catch (error) {
         console.error("Error al cargar las categorías:", error);

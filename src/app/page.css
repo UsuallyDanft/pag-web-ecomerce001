@@ -9,7 +9,7 @@
     padding: 1rem;
 
      /* fondo de pantalla animado */
- 
+
   }
 
 .presentBanner h1{
@@ -56,7 +56,7 @@
     margin: 4rem 0; /* Añade un espacio considerable arriba y abajo */
     padding: 0 1rem; /* Evita que la imagen toque los bordes en pantallas pequeñas */
   }
-  
+
   /* Estilos para la imagen dentro del contenedor */
   .BannerImage img {
     max-width: 100%; /* La imagen nunca será más ancha que su contenedor */
@@ -65,3 +65,30 @@
     border-radius: 15px; /* Bordes redondeados para un look moderno */
     box-shadow: 0 10px 25px var(--shadow-color); /* Sombra similar al botón */
   }
+
+/* Estilos específicos para móvil */
+@media (max-width: 768px) {
+  .presentBanner {
+    min-height: 60vh; /* Reduce la altura a 60% de la pantalla */
+    max-height: 60vh; /* Limita la altura máxima */
+  }
+
+  .presentBanner h1 {
+    font-size: 1.8rem; /* Reduce más el tamaño del título en móvil */
+    line-height: 1.3;
+  }
+
+  .presentBanner p {
+    font-size: 1rem; /* Reduce también el tamaño del párrafo */
+  }
+
+  .textBanner {
+    width: 90%; /* Ajusta el ancho del contenedor de texto */
+    margin-top: 20px; /* Reduce el margen superior */
+  }
+
+  .presentBnButton {
+    margin-top: 15px; /* Reduce el margen del botón */
+    font-size: 0.9rem; /* Reduce ligeramente el tamaño del botón */
+  }
+}

@@ -201,11 +201,22 @@
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg fill='%23666' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
   background-position: right 0.75rem center;
   background-size: 1.5em;
   background-repeat: no-repeat;
   padding-right: 3rem;
+}
+
+/* Flechas para tema claro */
+:root .category-select,
+:root .order-select {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg fill='%23666' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+}
+
+/* Flechas para tema oscuro */
+.dark .category-select,
+.dark .order-select {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg fill='%23a9b4c2' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
 }
 
 .category-select {

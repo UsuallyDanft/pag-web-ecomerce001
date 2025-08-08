@@ -456,21 +456,27 @@
   color: white;
 }
 
-.add-to-cart-btn {
-  background-color: var(--accent-color);
-  color: white;
-  border: none;
-  border-radius: 6px;
+.search-modal-item-actions .add-to-cart-btn {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 2px solid var(--border-color);
   padding: 0.5rem 1rem;
-  font-size: 0.875rem;
+  border-radius: 50px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 100%;
+  font-size: 0.9rem;
   font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-width: 80px;
+  box-shadow: 0 2px 8px var(--shadow-color);
 }
 
-.add-to-cart-btn:hover {
-  background-color: var(--accent-color-dark);
+.search-modal-item-actions .add-to-cart-btn:hover {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--bg-secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .search-hint,

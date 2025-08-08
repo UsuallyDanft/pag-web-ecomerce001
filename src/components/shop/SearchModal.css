@@ -141,6 +141,7 @@
   background-color: var(--bg-primary);
   transition: all 0.3s ease;
   overflow: hidden;
+  height: 36px;
 }
 
 .search-input-container:focus-within {
@@ -156,13 +157,15 @@
 
 .search-input-icon {
   position: absolute;
-  left: 1rem;
+  left: 0.8rem;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-secondary);
   pointer-events: none;
   transition: color 0.3s ease;
   z-index: 1;
+  width: 18px;
+  height: 18px;
 }
 
 .search-input-container:focus-within .search-input-icon {
@@ -171,14 +174,14 @@
 
 .search-input {
   width: 100%;
-  padding: 0.6rem 1.2rem 0.6rem 2.5rem;
+  padding: 0.4rem 1rem 0.4rem 2.2rem;
   border: none;
   border-radius: 50px;
   background-color: transparent;
   color: var(--text-primary);
-  font-size: 1rem;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
-  height: 44px;
+  height: 36px;
   box-sizing: border-box;
 }
 
@@ -201,14 +204,16 @@
   border: none;
   color: var(--text-secondary);
   cursor: pointer;
-  padding: 0.6rem;
+  padding: 0.4rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s, color 0.2s;
-  height: 44px;
-  width: 44px;
+  height: 36px;
+  width: 36px;
+  min-width: 36px;
+  flex-shrink: 0;
 }
 
 .filter-toggle-btn:hover {

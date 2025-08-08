@@ -1,0 +1,83 @@
+8Mixed Content: The page at '<URL>' was loaded over HTTPS, but requested an insecure element '<URL>'. This request was automatically upgraded to HTTPS, For more information see <URL>Understand this warning
+BannerHomeApi.js:7 Respuesta completa de la API: {
+  "data": {
+    "id": 6,
+    "documentId": "gwn9v4xou8mqbxz2zirua2f5",
+    "Titulo": "Banner promocional",
+    "descripcion": null,
+    "createdAt": "2025-08-06T18:30:42.032Z",
+    "updatedAt": "2025-08-08T17:07:33.656Z",
+    "publishedAt": "2025-08-08T17:07:33.677Z",
+    "image": {
+      "id": 33,
+      "documentId": "dri7fixutxud3pvgofxt6hq4",
+      "name": "rect16.png",
+      "alternativeText": null,
+      "caption": null,
+      "width": 1822,
+      "height": 375,
+      "formats": {
+        "thumbnail": {
+          "name": "thumbnail_rect16.png",
+          "hash": "thumbnail_rect16_6c0cbc44d2",
+          "ext": ".png",
+          "mime": "image/png",
+          "path": null,
+          "width": 245,
+          "height": 50,
+          "size": 9.39,
+          "sizeInBytes": 9390,
+          "url": "/uploads/thumbnail_rect16_6c0cbc44d2.png"
+        },
+        "small": {
+          "name": "small_rect16.png",
+          "hash": "small_rect16_6c0cbc44d2",
+          "ext": ".png",
+          "mime": "image/png",
+          "path": null,
+          "width": 500,
+          "height": 103,
+          "size": 18.94,
+          "sizeInBytes": 18940,
+          "url": "/uploads/small_rect16_6c0cbc44d2.png"
+        },
+        "large": {
+          "name": "large_rect16.png",
+          "hash": "large_rect16_6c0cbc44d2",
+          "ext": ".png",
+          "mime": "image/png",
+          "path": null,
+          "width": 1000,
+          "height": 206,
+          "size": 44.01,
+          "sizeInBytes": 44006,
+          "url": "/uploads/large_rect16_6c0cbc44d2.png"
+        },
+        "medium": {
+          "name": "medium_rect16.png",
+          "hash": "medium_rect16_6c0cbc44d2",
+          "ext": ".png",
+          "mime": "image/png",
+          "path": null,
+          "width": 750,
+          "height": 154,
+          "size": 29.31,
+          "sizeInBytes": 29309,
+          "url": "/uploads/medium_rect16_6c0cbc44d2.png"
+        }
+      },
+      "hash": "rect16_6c0cbc44d2",
+      "ext": ".png",
+      "mime": "image/png",
+      "size": 12.14,
+      "url": "/uploads/rect16_6c0cbc44d2.png",
+      "previewUrl": null,
+      "provider": "local",
+      "provider_metadata": null,
+      "createdAt": "2025-08-08T16:57:07.951Z",
+      "updatedAt": "2025-08-08T16:57:07.951Z",
+      "publishedAt": "2025-08-08T16:57:07.951Z"
+    }
+  },
+  "meta": {}
+}

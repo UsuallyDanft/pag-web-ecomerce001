@@ -1,6 +1,6 @@
   .product-card {
     max-width: 400px;
-    min-height: 520px;
+    min-height: 450px;
     border-radius: 20px;
     border: 2px solid var(--border-color);
     overflow: hidden; /* Asegura que la imagen no se salga de los bordes redondeados */
@@ -77,7 +77,7 @@
   
   .product-info {
     background-color: var(--bg-secondary);
-    padding: 1.5rem;
+    padding: 1rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -93,40 +93,40 @@
   
   .product-name {
     font-size: 1.20rem;
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 0.3rem 0;
     color: var(--text-primary);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-height: 2.8rem;
-    line-height: 1.4;
+    min-height: 2.4rem;
+    line-height: 1.2;
   }
   
   .product-description {
     font-size: 0.8rem;
     color: var(--text-secondary);
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-height: 3.6rem;
-    line-height: 1.5;
+    min-height: 2.4rem;
+    line-height: 1.2;
   }
   
   .product-price {
     font-size: 1.3rem;
     font-weight: bold;
     color: var(--text-primary);
-    margin-bottom: 2px;
+    margin-bottom: 0.2rem;
   }
 
   @media (max-width: 600px) {
     .product-card {
-      min-height: 480px;
+      min-height: 420px;
     }
     
     .product-image {
@@ -135,22 +135,26 @@
       max-height: 200px;
     }
     
+    .product-info {
+      padding: 0.8rem;
+    }
+    
     .product-name {
       font-size: 1.1rem;
-      margin-bottom: 0.3rem;
-      min-height: 2.6rem;
+      margin-bottom: 0.2rem;
+      min-height: 2.2rem;
     }
     
     .product-description {
       font-size: 0.75rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
       -webkit-line-clamp: 2;
-      min-height: 2.4rem;
+      min-height: 2rem;
     }
     
     .product-price {
       font-size: 1.2rem;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.2rem;
     }
   }
   
@@ -162,7 +166,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     gap: 1rem;
     flex-wrap: nowrap;
   }

@@ -1,13 +1,12 @@
-
 "use client";
 
 import React from 'react';
 import Link from 'next/link';
-import { X, Search, Sun, Moon, User } from 'lucide-react';
+import { X, Search, Sun, Moon, User, Home, Grid, Mail } from 'lucide-react';
 import { useTheme } from '@/components/context/ThemeContext';
 import './MobileSidebar.css';
 
-const MobileSidebar = ({ isOpen, onClose }) => {
+const MobileSidebar = ({ isOpen, onClose, onSearchOpen }) => {
   const { isDarkMode, toggleTheme } = useTheme();
 
   if (!isOpen) return null;
@@ -50,12 +49,12 @@ const MobileSidebar = ({ isOpen, onClose }) => {
               <Search size={20} />
               <span>Buscar</span>
             </Link>
-            
+
             <button onClick={handleThemeToggle} className="mobile-sidebar-action">
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
               <span>{isDarkMode ? 'Tema claro' : 'Tema oscuro'}</span>
             </button>
-            
+
             <Link href="/login" onClick={handleLinkClick} className="mobile-sidebar-action">
               <User size={20} />
               <span>Mi cuenta</span>

@@ -11,6 +11,7 @@ import { useCart } from '@/components/context/CartContext';
 import CartModal from './CartModal';
 import CartSidebar from './CartSidebar';
 import MobileSidebar from './MobileSidebar';
+import SearchModal from './SearchModal';
 import gsap from 'gsap';
 
 const Header = () => {
@@ -18,6 +19,7 @@ const Header = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const { itemCount } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -81,9 +83,9 @@ const Header = () => {
             </div>
 
             <div className="header-actions">
-              <Link href="/search">
+              <button onClick={() => setSearchOpen(true)} aria-label="Buscar productos">
                 <Search className="header-icon" />
-              </Link>
+              </button>
               <button className="cart-btn" onClick={() => setCartOpen(true)} style={{ position: 'relative' }} aria-label="Ver carrito">
                 <ShoppingCart className="header-icon" />
                 {itemCount > 0 && (
@@ -128,7 +130,11 @@ const Header = () => {
       </header>
       
       {/* Menú lateral móvil */}
-      <MobileSidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      <MobileSidebar 
+        isOpen={mobileMenuOpen} 
+        onClose={() => setMobileMenuOpen(false)}
+        onSearchOpen={() => setSearchOpen(true)}
+      />
 
       {/* Carrito */}
       {isMobile ? (
@@ -136,6 +142,9 @@ const Header = () => {
       ) : (
         <CartModal isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       )}
+
+      {/* Modal de búsqueda */}
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 };

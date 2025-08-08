@@ -53,23 +53,36 @@ const SearchModal = ({ isOpen, onClose }) => {
   const searchProducts = async () => {
     setIsLoading(true);
     try {
+      const strapiHost = process.env.NEXT_PUBLIC_STRAPI_HOST;
+      const strapiToken = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+      
+      console.log('Variables de entorno:', {
+        host: strapiHost,
+        token: strapiToken ? 'Existe' : 'No existe'
+      });
       console.log('Buscando productos con query:', searchQuery);
       
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_STRAPI_HOST}/api/products?populate=*&filters[name][$containsi]=${encodeURIComponent(searchQuery)}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_STRAPI_API_TOKEN}`
-          }
+      const url = `${strapiHost}/api/products?populate=*&filters[name][$containsi]=${encodeURIComponent(searchQuery)}`;
+      console.log('URL de búsqueda:', url);
+      
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${strapiToken}`,
+          'Content-Type': 'application/json'
         }
-      );
+      });
+      
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
       }
       
       const data = await response.json();
-      console.log('Respuesta de búsqueda:', data);
+      console.log('Respuesta de búsqueda completa:', data);
       
       if (data && data.data) {
         // Transformar datos de Strapi al formato esperado
@@ -111,15 +124,28 @@ const SearchModal = ({ isOpen, onClose }) => {
 
   const fetchCategories = async () => {
     try {
+      const strapiHost = process.env.NEXT_PUBLIC_STRAPI_HOST;
+      const strapiToken = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+      
       console.log('Obteniendo categorías...');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_HOST}/api/categories`, {
+      console.log('Host:', strapiHost);
+      
+      const url = `${strapiHost}/api/categories`;
+      console.log('URL categorías:', url);
+      
+      const response = await fetch(url, {
         headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_STRAPI_API_TOKEN}`
+          'Authorization': `Bearer ${strapiToken}`,
+          'Content-Type': 'application/json'
         }
       });
       
+      console.log('Categories response status:', response.status);
+      
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.error('Error response categories:', errorText);
+        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
       }
       
       const data = await response.json();

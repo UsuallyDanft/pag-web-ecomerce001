@@ -317,8 +317,12 @@ const SearchModal = ({ isOpen, onClose }) => {
                       <button 
                         onClick={() => handleAddToCart(product)}
                         className="add-to-cart-btn"
+                        style={{ position: 'relative' }}
                       >
                         <ShoppingCart size={16} />
+                        {itemCount > 0 && (
+                          <span className="cart-badge">{itemCount}</span>
+                        )}
                       </button>
                     </div>
                   </div>

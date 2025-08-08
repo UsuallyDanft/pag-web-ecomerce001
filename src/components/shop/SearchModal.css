@@ -491,6 +491,23 @@
   box-shadow: 0 4px 12px var(--shadow-color);
 }
 
+.search-modal-item-actions .add-to-cart-btn .cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .search-hint,
 .search-welcome {
   display: flex;

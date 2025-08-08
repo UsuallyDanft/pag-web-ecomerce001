@@ -45,7 +45,7 @@ const Header = () => {
 
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
@@ -83,8 +83,11 @@ const Header = () => {
             </div>
 
             <div className="header-actions">
-              <button onClick={() => setSearchOpen(true)} aria-label="Buscar productos">
-                <Search className="header-icon" />
+              <button 
+                className="search-btn"
+                onClick={() => setSearchOpen(true)}
+              >
+                <Search className="header-icon search-icon" size={24} />
               </button>
               <button className="cart-btn" onClick={() => setCartOpen(true)} style={{ position: 'relative' }} aria-label="Ver carrito">
                 <ShoppingCart className="header-icon" />
@@ -128,7 +131,7 @@ const Header = () => {
           </div>
         </div>
       </header>
-      
+
       {/* Menú lateral móvil */}
       <MobileSidebar 
         isOpen={mobileMenuOpen} 

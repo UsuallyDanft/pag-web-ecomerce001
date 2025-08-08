@@ -330,12 +330,8 @@ const SearchModal = ({ isOpen, onClose }) => {
                           onClick={() => handleAddToCart(product)}
                           className="add-to-cart-btn"
                           disabled={availableStock <= 0}
-                          style={{ position: 'relative' }}
                         >
                           <ShoppingCart size={16} />
-                          {itemCount > 0 && (
-                            <span className="cart-badge">{itemCount}</span>
-                          )}
                         </button>
                       </div>
                     </div>

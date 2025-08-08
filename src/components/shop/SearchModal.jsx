@@ -53,6 +53,8 @@ const SearchModal = ({ isOpen, onClose }) => {
   const searchProducts = async () => {
     setIsLoading(true);
     try {
+      console.log('Buscando productos con query:', searchQuery);
+      
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_STRAPI_HOST}/api/products?populate=*&filters[name][$containsi]=${encodeURIComponent(searchQuery)}`,
         {
@@ -61,7 +63,13 @@ const SearchModal = ({ isOpen, onClose }) => {
           }
         }
       );
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
+      console.log('Respuesta de búsqueda:', data);
       
       if (data && data.data) {
         // Transformar datos de Strapi al formato esperado
@@ -87,10 +95,15 @@ const SearchModal = ({ isOpen, onClose }) => {
           };
         });
         
+        console.log('Productos transformados:', transformedProducts);
         setProducts(transformedProducts);
+      } else {
+        console.log('No se encontraron datos en la respuesta');
+        setProducts([]);
       }
     } catch (error) {
       console.error('Error searching products:', error);
+      setProducts([]);
     } finally {
       setIsLoading(false);
     }
@@ -98,15 +111,23 @@ const SearchModal = ({ isOpen, onClose }) => {
 
   const fetchCategories = async () => {
     try {
+      console.log('Obteniendo categorías...');
       const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_HOST}/api/categories`, {
         headers: {
           'Authorization': `Bearer ${process.env.NEXT_PUBLIC_STRAPI_API_TOKEN}`
         }
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
+      console.log('Categorías obtenidas:', data);
       setCategories(data.data || []);
     } catch (error) {
       console.error('Error fetching categories:', error);
+      setCategories([]);
     }
   };
 
@@ -116,7 +137,8 @@ const SearchModal = ({ isOpen, onClose }) => {
     // Filtro por categoría
     if (selectedCategory !== 'all') {
       filtered = filtered.filter(product => 
-        product.category?.id?.toString() === selectedCategory
+        product.category?.id?.toString() === selectedCategory ||
+        product.category?.attributes?.id?.toString() === selectedCategory
       );
     }
 
@@ -256,7 +278,13 @@ const SearchModal = ({ isOpen, onClose }) => {
                     <div className="search-modal-item-details">
                       <h3 className="search-modal-item-name">{product.name}</h3>
                       <p className="search-modal-item-description">
-                        {product.description?.substring(0, 60)}...
+                        {product.description ? 
+                          (product.description.length > 60 ? 
+                            `${product.description.substring(0, 60)}...` : 
+                            product.description
+                          ) : 
+                          'Sin descripción disponible'
+                        }
                       </p>
                       <div className="search-modal-item-price">
                         ${product.price?.toFixed(2)}

@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { X, Search, Filter } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useCart } from '@/components/context/CartContext';
 import './SearchModal.css';
 
@@ -17,32 +18,79 @@ const SearchModal = ({ isOpen, onClose }) => {
   const [showFilters, setShowFilters] = useState(false);
 
   const { addToCart } = useCart();
+  const router = useRouter();
 
-  // Obtener productos y categorías
+  // Solo obtener categorías al abrir el modal
   useEffect(() => {
     if (isOpen) {
-      fetchProducts();
       fetchCategories();
+      // Limpiar estado anterior
+      setProducts([]);
+      setFilteredProducts([]);
+      setSearchQuery('');
+      setSelectedCategory('all');
+      setPriceRange({ min: '', max: '' });
     }
   }, [isOpen]);
 
-  // Filtrar productos
+  // Búsqueda dinámica cuando el usuario escribe
   useEffect(() => {
-    filterProducts();
-  }, [searchQuery, selectedCategory, priceRange, products]);
+    if (searchQuery.trim().length >= 2) {
+      searchProducts();
+    } else {
+      setProducts([]);
+      setFilteredProducts([]);
+    }
+  }, [searchQuery]);
 
-  const fetchProducts = async () => {
+  // Filtrar productos cuando cambien los filtros
+  useEffect(() => {
+    if (products.length > 0) {
+      filterProducts();
+    }
+  }, [selectedCategory, priceRange, products]);
+
+  const searchProducts = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_HOST}/api/products?populate=*`, {
-        headers: {
-          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_STRAPI_API_TOKEN}`
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_STRAPI_HOST}/api/products?populate=*&filters[name][$containsi]=${encodeURIComponent(searchQuery)}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_STRAPI_API_TOKEN}`
+          }
         }
-      });
+      );
       const data = await response.json();
-      setProducts(data.data || []);
+      
+      if (data && data.data) {
+        // Transformar datos de Strapi al formato esperado
+        const transformedProducts = data.data.map(product => {
+          const attributes = product.attributes;
+          const images = attributes.images?.data || [];
+          
+          return {
+            id: product.id,
+            documentId: product.documentId,
+            slug: attributes.slug,
+            name: attributes.name,
+            description: attributes.description,
+            price: attributes.price,
+            stock: attributes.stock || 10,
+            imageUrl: images.length > 0 ? 
+              `${process.env.NEXT_PUBLIC_STRAPI_HOST}${images[0].attributes.url}` : 
+              '/placeholder.jpg',
+            allImages: images.map(img => 
+              `${process.env.NEXT_PUBLIC_STRAPI_HOST}${img.attributes.url}`
+            ),
+            category: attributes.category?.data || null
+          };
+        });
+        
+        setProducts(transformedProducts);
+      }
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error searching products:', error);
     } finally {
       setIsLoading(false);
     }
@@ -65,14 +113,6 @@ const SearchModal = ({ isOpen, onClose }) => {
   const filterProducts = () => {
     let filtered = products;
 
-    // Filtro por búsqueda
-    if (searchQuery) {
-      filtered = filtered.filter(product => 
-        product.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description?.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
     // Filtro por categoría
     if (selectedCategory !== 'all') {
       filtered = filtered.filter(product => 
@@ -91,22 +131,16 @@ const SearchModal = ({ isOpen, onClose }) => {
     setFilteredProducts(filtered);
   };
 
-  const handleAddToCart = (product) => {
-    const productImage = product.images?.data?.[0] ? 
-      `${process.env.NEXT_PUBLIC_STRAPI_HOST}${product.images.data[0].url}` : 
-      '/placeholder.jpg';
+  const handleViewDetails = (product) => {
+    onClose(); // Cerrar modal antes de navegar
+    router.push(`/products/${product.slug}`);
+  };
 
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: productImage,
-      stock: product.stock || 10
-    });
+  const handleAddToCart = (product) => {
+    addToCart(product, 1);
   };
 
   const clearFilters = () => {
-    setSearchQuery('');
     setSelectedCategory('all');
     setPriceRange({ min: '', max: '' });
   };
@@ -133,7 +167,7 @@ const SearchModal = ({ isOpen, onClose }) => {
             <Search className="search-input-icon" />
             <input
               type="text"
-              placeholder="¿Qué estás buscando?"
+              placeholder="¿Qué estás buscando? (mínimo 2 caracteres)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="search-input"
@@ -161,7 +195,7 @@ const SearchModal = ({ isOpen, onClose }) => {
                   <option value="all">Todas las categorías</option>
                   {categories.map(category => (
                     <option key={category.id} value={category.id.toString()}>
-                      {category.name}
+                      {category.attributes?.name || category.name}
                     </option>
                   ))}
                 </select>
@@ -193,53 +227,66 @@ const SearchModal = ({ isOpen, onClose }) => {
 
         {/* Contenido de resultados */}
         <div className="search-modal-content">
-          {isLoading ? (
+          {searchQuery.length > 0 && searchQuery.length < 2 ? (
+            <div className="search-hint">
+              <Search size={48} className="search-hint-icon" />
+              <p>Escribe al menos 2 caracteres para buscar</p>
+            </div>
+          ) : isLoading ? (
             <div className="search-loading">
               <p>Buscando productos...</p>
             </div>
-          ) : filteredProducts.length === 0 ? (
+          ) : searchQuery.length >= 2 && filteredProducts.length === 0 ? (
             <div className="empty-search">
               <Search size={48} className="empty-search-icon" />
               <p>No se encontraron productos</p>
               <span>Intenta con otros términos de búsqueda</span>
             </div>
-          ) : (
+          ) : filteredProducts.length > 0 ? (
             <div className="search-modal-results">
               <div className="results-header">
                 <span>{filteredProducts.length} productos encontrados</span>
               </div>
               <div className="search-modal-items">
-                {filteredProducts.map((product) => {
-                  const productImage = product.images?.data?.[0] ? 
-                    `${process.env.NEXT_PUBLIC_STRAPI_HOST}${product.images.data[0].url}` : 
-                    '/placeholder.jpg';
-
-                  return (
-                    <div key={product.id} className="search-modal-item">
-                      <div className="search-modal-item-image">
-                        <img src={productImage} alt={product.name} />
+                {filteredProducts.map((product) => (
+                  <div key={product.id} className="search-modal-item">
+                    <div className="search-modal-item-image">
+                      <img src={product.imageUrl} alt={product.name} />
+                    </div>
+                    <div className="search-modal-item-details">
+                      <h3 className="search-modal-item-name">{product.name}</h3>
+                      <p className="search-modal-item-description">
+                        {product.description?.substring(0, 60)}...
+                      </p>
+                      <div className="search-modal-item-price">
+                        ${product.price?.toFixed(2)}
                       </div>
-                      <div className="search-modal-item-details">
-                        <h3 className="search-modal-item-name">{product.name}</h3>
-                        <p className="search-modal-item-description">
-                          {product.description?.substring(0, 60)}...
-                        </p>
-                        <div className="search-modal-item-price">
-                          ${product.price?.toFixed(2)}
-                        </div>
-                      </div>
-                      <div className="search-modal-item-actions">
-                        <button 
-                          onClick={() => handleAddToCart(product)}
-                          className="add-to-cart-btn"
-                        >
-                          Agregar
-                        </button>
+                      <div className="search-modal-item-stock">
+                        {product.stock} unidades disponibles
                       </div>
                     </div>
-                  );
-                })}
+                    <div className="search-modal-item-actions">
+                      <button 
+                        onClick={() => handleViewDetails(product)}
+                        className="details-btn"
+                      >
+                        Ver detalles
+                      </button>
+                      <button 
+                        onClick={() => handleAddToCart(product)}
+                        className="add-to-cart-btn"
+                      >
+                        Agregar
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
+            </div>
+          ) : (
+            <div className="search-welcome">
+              <Search size={48} className="search-welcome-icon" />
+              <p>Comienza a escribir para buscar productos</p>
             </div>
           )}
         </div>

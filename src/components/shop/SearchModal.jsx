@@ -63,7 +63,7 @@ const SearchModal = ({ isOpen, onClose }) => {
       console.log('Buscando productos con query:', searchQuery);
       
       // Usar la misma URL que funciona en ProductContainer
-      const url = `${strapiHost}/api/products?populate[images]=*&populate[category]=*&filters[name][$containsi]=${encodeURIComponent(searchQuery)}`;
+      const url = `${strapiHost}/api/products?populate=*&filters[name][$containsi]=${encodeURIComponent(searchQuery)}`;
       console.log('URL de búsqueda:', url);
       
       const response = await fetch(url, {
@@ -104,10 +104,13 @@ const SearchModal = ({ isOpen, onClose }) => {
             allImages: images.map(img => 
               `${strapiHost}${img.attributes.url}`
             ),
-            category: attributes.category?.data ? {
+            category: attributes.categories?.data?.[0] ? {
+              id: attributes.categories.data[0].id,
+              name: attributes.categories.data[0].attributes?.name || attributes.categories.data[0].name
+            } : (attributes.category?.data ? {
               id: attributes.category.data.id,
-              name: attributes.category.data.attributes?.name
-            } : null
+              name: attributes.category.data.attributes?.name || attributes.category.data.name
+            } : null)
           };
         });
         
@@ -164,9 +167,10 @@ const SearchModal = ({ isOpen, onClose }) => {
 
     // Filtro por categoría
     if (selectedCategory !== 'all') {
-      filtered = filtered.filter(product => 
-        product.category?.id?.toString() === selectedCategory
-      );
+      filtered = filtered.filter(product => {
+        if (!product.category) return false;
+        return product.category.id?.toString() === selectedCategory;
+      });
     }
 
     // Filtro por precio

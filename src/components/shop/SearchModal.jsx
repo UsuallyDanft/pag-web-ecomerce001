@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Search, Filter } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/components/context/CartContext';
+import { queryAPI } from '@/components/lib/strapi';
 import './SearchModal.css';
 
 const SearchModal = ({ isOpen, onClose }) => {
@@ -53,64 +54,65 @@ const SearchModal = ({ isOpen, onClose }) => {
   const searchProducts = async () => {
     setIsLoading(true);
     try {
-      const strapiHost = process.env.NEXT_PUBLIC_STRAPI_HOST;
-      const strapiToken = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
-      
-      console.log('Variables de entorno:', {
-        host: strapiHost,
-        token: strapiToken ? 'Existe' : 'No existe'
-      });
       console.log('Buscando productos con query:', searchQuery);
       
-      // Usar la misma URL que funciona en ProductContainer
-      const url = `${strapiHost}/api/products?populate=*&filters[name][$containsi]=${encodeURIComponent(searchQuery)}`;
-      console.log('URL de búsqueda:', url);
+      // Usar la misma estructura que en ProductContainer
+      let apiPath = '/api/products?populate=*';
+      apiPath += `&filters[name][$containsi]=${encodeURIComponent(searchQuery)}`;
       
-      const response = await fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${strapiToken}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      console.log('API path:', apiPath);
       
-      console.log('Response status:', response.status);
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error response:', errorText);
-        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
-      }
-      
-      const data = await response.json();
+      const data = await queryAPI(apiPath);
       console.log('Respuesta de búsqueda completa:', data);
       
       if (data && data.data && data.data.length > 0) {
         // Usar la misma transformación que en ProductContainer
         const transformedProducts = data.data.map(product => {
-          const attributes = product.attributes;
-          const images = attributes.images?.data || [];
+          const attributes = product.attributes || product;
+          let imageUrl = '/placeholder.png';
+          let allImages = [];
+          
+          // Manejar imágenes igual que en ProductContainer
+          const images = attributes.images || [];
+          if (Array.isArray(images) && images.length > 0) {
+            allImages = images.map(img => {
+              if (img.url) {
+                return new URL(img.url, process.env.NEXT_PUBLIC_STRAPI_HOST).href;
+              }
+              return null;
+            }).filter(url => url !== null);
+            
+            if (allImages.length > 0) {
+              imageUrl = allImages[0];
+            }
+          }
+          
+          // Manejar categorías igual que en ProductContainer
+          const categories = attributes.categories || [];
+          let category = null;
+          
+          if (Array.isArray(categories) && categories.length > 0) {
+            const firstCategory = categories[0];
+            if (firstCategory && firstCategory.attributes) {
+              category = {
+                id: firstCategory.id,
+                name: firstCategory.attributes.name,
+                slug: firstCategory.attributes.slug
+              };
+            }
+          }
           
           return {
             id: product.id,
             documentId: product.documentId,
-            slug: attributes.slug,
-            name: attributes.name,
-            description: attributes.description,
-            price: parseFloat(attributes.price) || 0,
+            slug: attributes.slug || '',
+            name: attributes.name || 'Sin nombre',
+            description: attributes.description || '',
+            price: typeof attributes.price === 'number' ? attributes.price : 0,
             stock: attributes.stock || 10,
-            imageUrl: images.length > 0 ? 
-              `${strapiHost}${images[0].attributes.url}` : 
-              '/placeholder.jpg',
-            allImages: images.map(img => 
-              `${strapiHost}${img.attributes.url}`
-            ),
-            category: attributes.categories?.data?.[0] ? {
-              id: attributes.categories.data[0].id,
-              name: attributes.categories.data[0].attributes?.name || attributes.categories.data[0].name
-            } : (attributes.category?.data ? {
-              id: attributes.category.data.id,
-              name: attributes.category.data.attributes?.name || attributes.category.data.name
-            } : null)
+            imageUrl,
+            allImages,
+            category
           };
         });
         
@@ -130,32 +132,16 @@ const SearchModal = ({ isOpen, onClose }) => {
 
   const fetchCategories = async () => {
     try {
-      const strapiHost = process.env.NEXT_PUBLIC_STRAPI_HOST;
-      const strapiToken = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
-      
       console.log('Obteniendo categorías para modal de búsqueda...');
       
-      const url = `${strapiHost}/api/categories`;
-      console.log('URL categorías:', url);
-      
-      const response = await fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${strapiToken}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      console.log('Categories response status:', response.status);
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error response categories:', errorText);
-        return;
-      }
-      
-      const data = await response.json();
+      const data = await queryAPI('/api/categories?populate=*');
       console.log('Categorías obtenidas:', data);
-      setCategories(data.data || []);
+      
+      if (data && data.data) {
+        setCategories(data.data);
+      } else {
+        setCategories([]);
+      }
     } catch (error) {
       console.error('Error fetching categories:', error);
       setCategories([]);

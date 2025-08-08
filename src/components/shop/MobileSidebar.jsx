@@ -45,10 +45,13 @@ const MobileSidebar = ({ isOpen, onClose, onSearchOpen }) => {
 
           {/* Acciones con iconos */}
           <div className="mobile-sidebar-actions">
-            <Link href="/search" onClick={handleLinkClick} className="mobile-sidebar-action">
-              <Search size={20} />
-              <span>Buscar</span>
-            </Link>
+            <button className="mobile-sidebar-action" onClick={() => {
+            onSearchOpen();
+            onClose();
+          }}>
+            <Search size={20} />
+            <span>Buscar</span>
+          </button>
 
             <button onClick={handleThemeToggle} className="mobile-sidebar-action">
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}

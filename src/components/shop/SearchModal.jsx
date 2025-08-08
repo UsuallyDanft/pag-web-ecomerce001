@@ -62,7 +62,8 @@ const SearchModal = ({ isOpen, onClose }) => {
       });
       console.log('Buscando productos con query:', searchQuery);
       
-      const url = `${strapiHost}/api/products?populate=*&filters[name][$containsi]=${encodeURIComponent(searchQuery)}`;
+      // Usar la misma URL que funciona en ProductContainer
+      const url = `${strapiHost}/api/products?populate[images]=*&populate[category]=*&filters[name][$containsi]=${encodeURIComponent(searchQuery)}`;
       console.log('URL de búsqueda:', url);
       
       const response = await fetch(url, {
@@ -73,7 +74,6 @@ const SearchModal = ({ isOpen, onClose }) => {
       });
       
       console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
       
       if (!response.ok) {
         const errorText = await response.text();
@@ -84,8 +84,8 @@ const SearchModal = ({ isOpen, onClose }) => {
       const data = await response.json();
       console.log('Respuesta de búsqueda completa:', data);
       
-      if (data && data.data) {
-        // Transformar datos de Strapi al formato esperado
+      if (data && data.data && data.data.length > 0) {
+        // Usar la misma transformación que en ProductContainer
         const transformedProducts = data.data.map(product => {
           const attributes = product.attributes;
           const images = attributes.images?.data || [];
@@ -96,22 +96,25 @@ const SearchModal = ({ isOpen, onClose }) => {
             slug: attributes.slug,
             name: attributes.name,
             description: attributes.description,
-            price: attributes.price,
+            price: parseFloat(attributes.price) || 0,
             stock: attributes.stock || 10,
             imageUrl: images.length > 0 ? 
-              `${process.env.NEXT_PUBLIC_STRAPI_HOST}${images[0].attributes.url}` : 
+              `${strapiHost}${images[0].attributes.url}` : 
               '/placeholder.jpg',
             allImages: images.map(img => 
-              `${process.env.NEXT_PUBLIC_STRAPI_HOST}${img.attributes.url}`
+              `${strapiHost}${img.attributes.url}`
             ),
-            category: attributes.category?.data || null
+            category: attributes.category?.data ? {
+              id: attributes.category.data.id,
+              name: attributes.category.data.attributes?.name
+            } : null
           };
         });
         
         console.log('Productos transformados:', transformedProducts);
         setProducts(transformedProducts);
       } else {
-        console.log('No se encontraron datos en la respuesta');
+        console.log('No se encontraron productos en la respuesta');
         setProducts([]);
       }
     } catch (error) {
@@ -127,8 +130,7 @@ const SearchModal = ({ isOpen, onClose }) => {
       const strapiHost = process.env.NEXT_PUBLIC_STRAPI_HOST;
       const strapiToken = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
       
-      console.log('Obteniendo categorías...');
-      console.log('Host:', strapiHost);
+      console.log('Obteniendo categorías para modal de búsqueda...');
       
       const url = `${strapiHost}/api/categories`;
       console.log('URL categorías:', url);
@@ -145,7 +147,7 @@ const SearchModal = ({ isOpen, onClose }) => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Error response categories:', errorText);
-        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+        return;
       }
       
       const data = await response.json();
@@ -158,22 +160,27 @@ const SearchModal = ({ isOpen, onClose }) => {
   };
 
   const filterProducts = () => {
-    let filtered = products;
+    let filtered = [...products];
 
     // Filtro por categoría
     if (selectedCategory !== 'all') {
       filtered = filtered.filter(product => 
-        product.category?.id?.toString() === selectedCategory ||
-        product.category?.attributes?.id?.toString() === selectedCategory
+        product.category?.id?.toString() === selectedCategory
       );
     }
 
     // Filtro por precio
     if (priceRange.min !== '') {
-      filtered = filtered.filter(product => product.price >= parseFloat(priceRange.min));
+      const minPrice = parseFloat(priceRange.min);
+      if (!isNaN(minPrice)) {
+        filtered = filtered.filter(product => product.price >= minPrice);
+      }
     }
     if (priceRange.max !== '') {
-      filtered = filtered.filter(product => product.price <= parseFloat(priceRange.max));
+      const maxPrice = parseFloat(priceRange.max);
+      if (!isNaN(maxPrice)) {
+        filtered = filtered.filter(product => product.price <= maxPrice);
+      }
     }
 
     setFilteredProducts(filtered);

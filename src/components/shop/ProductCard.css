@@ -126,13 +126,13 @@
 
   @media (max-width: 600px) {
     .product-card {
-      min-height: 350px;
+      min-height: 380px;
     }
     
     .product-image {
-      height: 180px;
-      min-height: 180px;
-      max-height: 180px;
+      height: 220px;
+      min-height: 220px;
+      max-height: 220px;
     }
     
     .product-info {

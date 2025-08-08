@@ -18,7 +18,7 @@ const SearchModal = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
-  const { addToCart } = useCart();
+  const { addToCart, itemCount } = useCart();
   const router = useRouter();
 
   // Solo obtener categorías al abrir el modal

@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { X, Search, Filter } from 'lucide-react';
+import { X, Search, Filter, ShoppingCart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/components/context/CartContext';
 import { queryAPI } from '@/components/lib/strapi';
@@ -316,9 +316,9 @@ const SearchModal = ({ isOpen, onClose }) => {
                       </button>
                       <button 
                         onClick={() => handleAddToCart(product)}
-                        className="details-btn"
+                        className="add-to-cart-btn"
                       >
-                        Agregar
+                        <ShoppingCart size={16} />
                       </button>
                     </div>
                   </div>

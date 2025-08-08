@@ -320,6 +320,7 @@
 }
 
 .empty-search p, .search-loading p {
+  margin: 0;
   font-size: 1.2rem;
   font-weight: 500;
   color: var(--text-primary);
@@ -484,11 +485,20 @@
 }
 
 .search-modal-item-actions .add-to-cart-btn:hover {
-  background: var(--accent-color);
-  border-color: var(--accent-color);
-  color: var(--bg-secondary);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px var(--shadow-color);
+  background: #f7ca00;
+  color: #000000;
+}
+
+.add-to-cart-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #ccc;
+}
+
+.add-to-cart-btn:disabled:hover {
+  background: #ccc;
+  color: #666;
+  transform: none;
 }
 
 .search-modal-item-actions .add-to-cart-btn .cart-badge {

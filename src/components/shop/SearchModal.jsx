@@ -18,7 +18,7 @@ const SearchModal = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
 
-  const { addToCart, itemCount } = useCart();
+  const { addToCart, itemCount, getItemQuantity } = useCart();
   const router = useRouter();
 
   // Solo obtener categorías al abrir el modal
@@ -182,6 +182,14 @@ const SearchModal = ({ isOpen, onClose }) => {
   };
 
   const handleAddToCart = (product) => {
+    // Verificar stock disponible antes de agregar
+    const quantityInCart = getItemQuantity(product.id);
+    const availableStock = (product.stock || 0) - quantityInCart;
+    
+    if (availableStock <= 0) {
+      return; // No agregar si no hay stock disponible
+    }
+    
     addToCart(product, 1);
   };
 
@@ -293,40 +301,46 @@ const SearchModal = ({ isOpen, onClose }) => {
                 <span>{filteredProducts.length} productos encontrados</span>
               </div>
               <div className="search-modal-items">
-                {filteredProducts.map((product) => (
-                  <div key={product.id} className="search-modal-item">
-                    <div className="search-modal-item-image">
-                      <img src={product.imageUrl} alt={product.name} />
-                    </div>
-                    <div className="search-modal-item-details">
-                      <h3 className="search-modal-item-name">{product.name}</h3>
-                      <div className="search-modal-item-price">
-                        ${product.price?.toFixed(2)}
+                {filteredProducts.map((product) => {
+                  const quantityInCart = getItemQuantity(product.id);
+                  const availableStock = (product.stock || 0) - quantityInCart;
+                  
+                  return (
+                    <div key={product.id} className="search-modal-item">
+                      <div className="search-modal-item-image">
+                        <img src={product.imageUrl} alt={product.name} />
                       </div>
-                      <div className="search-modal-item-stock">
-                        {product.stock} unidades disponibles
+                      <div className="search-modal-item-details">
+                        <h3 className="search-modal-item-name">{product.name}</h3>
+                        <div className="search-modal-item-price">
+                          ${product.price?.toFixed(2)}
+                        </div>
+                        <div className="search-modal-item-stock">
+                          {availableStock} unidades disponibles
+                        </div>
+                      </div>
+                      <div className="search-modal-item-actions">
+                        <button 
+                          onClick={() => handleViewDetails(product)}
+                          className="details-btn"
+                        >
+                          Ver detalles
+                        </button>
+                        <button 
+                          onClick={() => handleAddToCart(product)}
+                          className="add-to-cart-btn"
+                          disabled={availableStock <= 0}
+                          style={{ position: 'relative' }}
+                        >
+                          <ShoppingCart size={16} />
+                          {itemCount > 0 && (
+                            <span className="cart-badge">{itemCount}</span>
+                          )}
+                        </button>
                       </div>
                     </div>
-                    <div className="search-modal-item-actions">
-                      <button 
-                        onClick={() => handleViewDetails(product)}
-                        className="details-btn"
-                      >
-                        Ver detalles
-                      </button>
-                      <button 
-                        onClick={() => handleAddToCart(product)}
-                        className="add-to-cart-btn"
-                        style={{ position: 'relative' }}
-                      >
-                        <ShoppingCart size={16} />
-                        {itemCount > 0 && (
-                          <span className="cart-badge">{itemCount}</span>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ) : (

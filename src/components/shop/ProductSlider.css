@@ -10,7 +10,7 @@
 
 @media (max-width: 600px) {
   .product-slider-container {
-    height: 580px;
+    height: 480px;
   }
 }
 
@@ -155,7 +155,7 @@
 
 @media (max-width: 600px) {
   .product-slider-list {
-    min-height: 480px;
+    min-height: 420px;
   }
 }
 

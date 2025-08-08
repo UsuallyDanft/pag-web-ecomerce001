@@ -300,15 +300,6 @@ const SearchModal = ({ isOpen, onClose }) => {
                     </div>
                     <div className="search-modal-item-details">
                       <h3 className="search-modal-item-name">{product.name}</h3>
-                      <p className="search-modal-item-description">
-                        {product.description ? 
-                          (product.description.length > 60 ? 
-                            `${product.description.substring(0, 60)}...` : 
-                            product.description
-                          ) : 
-                          'Sin descripción disponible'
-                        }
-                      </p>
                       <div className="search-modal-item-price">
                         ${product.price?.toFixed(2)}
                       </div>
@@ -325,7 +316,7 @@ const SearchModal = ({ isOpen, onClose }) => {
                       </button>
                       <button 
                         onClick={() => handleAddToCart(product)}
-                        className="add-to-cart-btn"
+                        className="details-btn"
                       >
                         Agregar
                       </button>

@@ -220,7 +220,7 @@ const SearchModal = ({ isOpen, onClose }) => {
             <Search className="search-input-icon" />
             <input
               type="text"
-              placeholder="¿Qué estás buscando? (mínimo 2 caracteres)"
+              placeholder=""
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="search-input"

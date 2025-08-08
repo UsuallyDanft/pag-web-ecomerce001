@@ -124,7 +124,7 @@
   border-bottom: 1px solid var(--border-color);
   display: flex;
   gap: 1rem;
-  align-items: center;
+  align-items: stretch;
 }
 
 @media (max-width: 768px) {
@@ -141,7 +141,9 @@
   background-color: var(--bg-primary);
   transition: all 0.3s ease;
   overflow: hidden;
-  height: 36px;
+  height: 40px;
+  display: flex;
+  align-items: center;
 }
 
 .search-input-container:focus-within {
@@ -174,14 +176,14 @@
 
 .search-input {
   width: 100%;
-  padding: 0.4rem 1rem 0.4rem 2.2rem;
+  padding: 0 1rem 0 2.2rem;
   border: none;
   border-radius: 50px;
   background-color: transparent;
   color: var(--text-primary);
   font-size: 0.95rem;
   transition: all 0.3s ease;
-  height: 36px;
+  height: 100%;
   box-sizing: border-box;
 }
 
@@ -204,15 +206,15 @@
   border: none;
   color: var(--text-secondary);
   cursor: pointer;
-  padding: 0.4rem;
+  padding: 0;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s, color 0.2s;
-  height: 36px;
-  width: 36px;
-  min-width: 36px;
+  height: 40px;
+  width: 40px;
+  min-width: 40px;
   flex-shrink: 0;
 }
 

@@ -215,6 +215,16 @@
   align-items: center;
   padding: 0 1rem;
   background-color: var(--bg-primary);
+  width: 100%;
+  height: 80px;
+}
+
+.mobile-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .mobile-menu-btn, .mobile-cart-btn {
@@ -269,6 +279,15 @@
 }
 
 @media (max-width: 768px) {
+  .shop-header {
+    padding: 0;
+  }
+  
+  .header-container {
+    height: 80px;
+    padding: 0;
+  }
+  
   .desktop-header {
     display: none;
   }

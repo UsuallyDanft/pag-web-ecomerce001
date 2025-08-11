@@ -24,17 +24,7 @@ export default function ProductsPage() {
   const searchParams = useSearchParams();
   const categorySlug = searchParams.get('category');
 
-  // Efecto para sincronizar currentCategory con categorySlug de la URL
-  useEffect(() => {
-    if (categorySlug) {
-      console.log('Slug de categoría desde URL:', categorySlug);
-      setCurrentCategory(categorySlug);
-    } else {
-      setCurrentCategory('');
-    }
-  }, [categorySlug]);
-
-  // Cargar categorías
+  // Cargar categorías primero
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -63,20 +53,37 @@ export default function ProductsPage() {
     fetchCategories();
   }, []);
 
-  // Cargar productos
+  // Sincronizar currentCategory con categorySlug de la URL después de que se carguen las categorías
+  useEffect(() => {
+    console.log('=== SINCRONIZANDO ESTADO CON URL ===');
+    console.log('categorySlug desde URL:', categorySlug);
+    console.log('currentCategory actual:', currentCategory);
+    
+    const targetCategory = categorySlug || '';
+    
+    if (targetCategory !== currentCategory) {
+      console.log('Actualizando currentCategory a:', targetCategory);
+      setCurrentCategory(targetCategory);
+      setCurrentPage(1); // Resetear página al cambiar categoría
+    }
+  }, [categorySlug, categorias]); // Dependemos de categorías para asegurar que estén cargadas
+
+  // Cargar productos cuando cambie currentCategory
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
         console.log("=== CARGANDO PRODUCTOS ===");
-        console.log("Categoría actual:", currentCategory);
+        console.log("Categoría actual para filtrar:", currentCategory);
         
         let apiPath = '/api/products?populate=*';
         
         // Si hay categoría seleccionada, filtrar por ella
         if (currentCategory && currentCategory !== '') {
           apiPath += `&filters[categories][slug][$eq]=${currentCategory}`;
-          console.log("Filtrando por categoría:", currentCategory);
+          console.log("Aplicando filtro de categoría:", currentCategory);
+        } else {
+          console.log("Cargando todos los productos (sin filtro)");
         }
         
         console.log("URL de API:", apiPath);
@@ -124,6 +131,7 @@ export default function ProductsPage() {
           console.log(`Productos transformados: ${transformedProducts.length}`, transformedProducts);
           setProductos(transformedProducts);
         } else {
+          console.log("No se encontraron productos");
           setProductos([]);
         }
       } catch (error) {
@@ -134,8 +142,11 @@ export default function ProductsPage() {
       }
     };
 
-    fetchProducts();
-  }, [currentCategory]);
+    // Solo cargar productos si las categorías ya están cargadas o si no hay filtro de categoría
+    if (categorias.length > 0 || !currentCategory) {
+      fetchProducts();
+    }
+  }, [currentCategory, categorias]);
 
   // Obtener el nombre de la categoría actual
   const getCurrentCategoryName = () => {

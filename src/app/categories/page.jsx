@@ -1,27 +1,42 @@
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
 import CategoryContainer from '@/components/shop/CategoryContainer';
 import { queryAPI } from '@/components/lib/strapi';
-import { useRouter } from 'next/navigation'; // 1. Importa useRouter
+import { useRouter } from 'next/navigation';
 
 export default function CategoriesPage() {
   const [categorias, setCategorias] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter(); // 2. Inicializa el router
+  const router = useRouter();
 
-  // 3. Actualiza la función para navegar
   const handleViewCategory = (category) => {
-    // Navegamos a la página de productos, pasando el slug en la URL
-    router.push(`/products?category=${category.attributes.slug}`);
+    console.log('Navegando a categoría:', category);
+    if (category.slug) {
+      router.push(`/products?category=${category.slug}`);
+    }
   };
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        console.log("=== CARGANDO CATEGORÍAS EN PÁGINA CATEGORIES ===");
         const data = await queryAPI('/api/categories?populate=*');
-        if (data && data.data) {
-          setCategorias(data.data);
+        console.log("Respuesta de categorías:", data);
+
+        if (data?.data) {
+          // Transformar para estructura consistente
+          const transformedCategories = data.data.map(category => ({
+            id: category.id,
+            slug: category.slug,
+            name: category.name,
+            description: category.description || '',
+            image: category.image
+          }));
+          
+          console.log("Categorías transformadas:", transformedCategories);
+          setCategorias(transformedCategories);
         }
       } catch (error) {
         console.error("Error al cargar las categorías:", error);
@@ -35,9 +50,22 @@ export default function CategoriesPage() {
   return (
     <div style={{ padding: '2rem 0' }}>
       <div style={{
-          padding: '2rem',
-          textAlign: 'center',
+        padding: '2rem',
+        textAlign: 'center',
+      }}>
+        <h1 style={{ 
+          fontSize: '2.5rem', 
+          marginBottom: '1rem', 
+          color: 'var(--text-primary)'
         }}>
+          Categorías
+        </h1>
+        <p style={{ 
+          fontSize: '1.2rem', 
+          color: 'var(--text-secondary)'
+        }}>
+          Explora nuestras diferentes categorías de productos
+        </p>
       </div>
 
       {isLoading ? (

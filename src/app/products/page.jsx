@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -10,129 +11,117 @@ const sortOptions = [
   { value: 'name', label: 'Nombre' },
 ];
 
-const PAGE_SIZE = 8; // Aumentamos el tamaño de página para la página de productos
+const PAGE_SIZE = 8;
 
 export default function ProductsPage() {
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [currentSort, setCurrentSort] = useState('price-asc');
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentCategory, setCurrentCategory] = useState(null);
+  const [currentCategory, setCurrentCategory] = useState('');
   const [loading, setLoading] = useState(true);
 
-  // 2. Obtén los parámetros de la URL
   const searchParams = useSearchParams();
-  const categorySlug = searchParams.get('category'); // Obtiene el valor de 'category'
+  const categorySlug = searchParams.get('category');
 
-  // useEffect para obtener categorías
+  // Efecto para sincronizar currentCategory con categorySlug de la URL
+  useEffect(() => {
+    if (categorySlug) {
+      console.log('Slug de categoría desde URL:', categorySlug);
+      setCurrentCategory(categorySlug);
+    } else {
+      setCurrentCategory('');
+    }
+  }, [categorySlug]);
+
+  // Cargar categorías
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        console.log("=== INICIANDO CARGA DE CATEGORÍAS ===");
+        console.log("=== CARGANDO CATEGORÍAS ===");
         const data = await queryAPI('/api/categories?populate=*');
-        console.log("=== RESPUESTA CRUDA DE CATEGORÍAS ===", JSON.stringify(data, null, 2));
+        console.log("Respuesta de categorías:", data);
 
-        if (data && data.data) {
-          console.log(`Total de categorías recibidas: ${data.data.length}`);
-
-          // Mostrar cada categoría para debug
-          data.data.forEach((category, index) => {
-            console.log(`Categoría ${index}:`, category);
-            console.log(`- ID: ${category.id}`);
-            console.log(`- Attributes:`, category.attributes);
-            if (category.attributes) {
-              console.log(`- Slug: ${category.attributes.slug}`);
-              console.log(`- Name: ${category.attributes.name}`);
-              console.log(`- Description: ${category.attributes.description}`);
-            }
-          });
-
-          // Transformar categorías para que tengan la estructura esperada
-          const transformedCategories = data.data.map(category => {
-            console.log(`Transformando categoría ${category.id}:`, category);
-            return {
-              id: category.id,
-              attributes: {
-                slug: category.slug,
-                name: category.name,
-                description: category.description,
-                image: category.image
-              }
-            };
-          });
-
-          console.log(`Categorías transformadas: ${transformedCategories.length}`, transformedCategories);
+        if (data?.data) {
+          // Transformar categorías para estructura consistente
+          const transformedCategories = data.data.map(category => ({
+            id: category.id,
+            slug: category.slug,
+            name: category.name,
+            description: category.description || '',
+            image: category.image
+          }));
+          
+          console.log("Categorías transformadas:", transformedCategories);
           setCategorias(transformedCategories);
-        } else {
-          console.log("No se encontraron datos de categorías:", data);
-          setCategorias([]);
         }
       } catch (error) {
-        console.error("Error al cargar las categorías:", error);
+        console.error("Error al cargar categorías:", error);
         setCategorias([]);
       }
     };
     fetchCategories();
   }, []);
 
-  // useEffect para obtener productos, dependiente de categorySlug y currentCategory
+  // Cargar productos
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        // 3. Construye la ruta de la API dinámicamente
+        console.log("=== CARGANDO PRODUCTOS ===");
+        console.log("Categoría actual:", currentCategory);
+        
         let apiPath = '/api/products?populate=*';
         
-        // Si currentCategory es explícitamente null (se seleccionó "Todos los productos")
-        // entonces ignoramos categorySlug y traemos todos los productos
-        if (currentCategory === null) {
-          // No añadir filtro - traer todos los productos
-        } else {
-          // Si currentCategory tiene valor, lo usamos, sino usamos categorySlug
-          const activeCategory = currentCategory || categorySlug;
-          if (activeCategory && activeCategory !== '') {
-            // Si hay un slug de categoría válido, añade el filtro a la ruta
-            apiPath += `&filters[categories][slug][$eq]=${activeCategory}`;
-          }
+        // Si hay categoría seleccionada, filtrar por ella
+        if (currentCategory && currentCategory !== '') {
+          apiPath += `&filters[categories][slug][$eq]=${currentCategory}`;
+          console.log("Filtrando por categoría:", currentCategory);
         }
+        
+        console.log("URL de API:", apiPath);
         const data = await queryAPI(apiPath);
-        console.log("=== RESPUESTA CRUDA DE PRODUCTOS ===", data.data);
-        if (data && data.data) {
-          // Transformar los datos de Strapi al formato que espera ProductCard
+        console.log("Respuesta de productos:", data);
+
+        if (data?.data) {
+          // Transformar productos para estructura consistente
           const transformedProducts = data.data.map(product => {
-            const attributes = product.attributes || product;
             let imageUrl = '/placeholder.png';
             let allImages = [];
 
-            if (attributes.images && attributes.images.length > 0) {
-              // Procesar todas las imágenes del producto
-              allImages = attributes.images.map(img => {
-                if (img.url) {
-                  return new URL(img.url, process.env.NEXT_PUBLIC_STRAPI_HOST).href;
+            // Procesar imágenes
+            if (product.images && Array.isArray(product.images)) {
+              allImages = product.images.map(img => {
+                if (img?.url) {
+                  return img.url.startsWith('http') 
+                    ? img.url 
+                    : new URL(img.url, process.env.NEXT_PUBLIC_STRAPI_HOST).href;
                 }
                 return null;
-              }).filter(url => url !== null);
+              }).filter(Boolean);
 
-              // Usar la primera imagen como imagen principal
               if (allImages.length > 0) {
                 imageUrl = allImages[0];
               }
             }
 
-            console.log('Producto:', attributes.name, 'URL de imagen:', imageUrl, 'Todas las imágenes:', allImages);
-            const categories = attributes.categories || [];
+            // Procesar categorías del producto
+            const productCategories = product.categories || [];
+
             return {
               id: product.id,
-              slug: attributes.slug,
-              name: attributes.name,
-              description: attributes.description,
-              price: attributes.price,
-              imageUrl, // Imagen principal
-              allImages, // Todas las imágenes del producto
-              categories,
-              stock: attributes.stock, // <-- Ahora seguro viene de attributes
+              slug: product.slug,
+              name: product.name,
+              description: product.description || '',
+              price: product.price || 0,
+              imageUrl,
+              allImages,
+              categories: productCategories,
+              stock: product.stock || 0,
             };
           });
+
+          console.log(`Productos transformados: ${transformedProducts.length}`, transformedProducts);
           setProductos(transformedProducts);
         } else {
           setProductos([]);
@@ -144,8 +133,17 @@ export default function ProductsPage() {
         setLoading(false);
       }
     };
+
     fetchProducts();
-  }, [categorySlug, currentCategory]); // 4. El efecto se ejecuta de nuevo si 'categorySlug' o 'currentCategory' cambia
+  }, [currentCategory]);
+
+  // Obtener el nombre de la categoría actual
+  const getCurrentCategoryName = () => {
+    if (!currentCategory) return 'Todos los Productos';
+    
+    const category = categorias.find(cat => cat.slug === currentCategory);
+    return category ? category.name : currentCategory.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  };
 
   // Ordenar productos
   const sortedProducts = [...productos].sort((a, b) => {
@@ -162,18 +160,14 @@ export default function ProductsPage() {
     currentPage * PAGE_SIZE
   );
 
-  // Cambiar de orden reinicia la página
   const handleSortChange = (sort) => {
     setCurrentSort(sort);
     setCurrentPage(1);
   };
 
-  // Cambiar de categoría reinicia la página
-  const handleCategoryChange = (category) => {
-    console.log('Cambio de categoría:', category);
-    // Si category es una string vacía, establecer como null para mostrar todos los productos
-    // Si category tiene valor, usarlo directamente
-    setCurrentCategory(category === '' ? null : category);
+  const handleCategoryChange = (categorySlug) => {
+    console.log('Cambio de categoría a:', categorySlug);
+    setCurrentCategory(categorySlug);
     setCurrentPage(1);
   };
 
@@ -202,26 +196,20 @@ export default function ProductsPage() {
           marginBottom: '1rem', 
           color: 'var(--text-primary)'
         }}>
-          {currentCategory === null ? 
-            'Todos los Productos' : 
-            (currentCategory || categorySlug) ? 
-              ((currentCategory || categorySlug).replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())) : 
-              'Todos los Productos'}
+          {getCurrentCategoryName()}
         </h1>
         <p style={{ 
           fontSize: '1.2rem', 
           color: 'var(--text-secondary)'
         }}>
-          {currentCategory === null ? 
-            'Explora nuestra amplia selección de productos de calidad.' : 
-            (currentCategory || categorySlug) ? 
-              `Explora los productos de la categoría: ${(currentCategory || categorySlug).replace(/-/g, ' ')}` : 
-              'Explora nuestra amplia selección de productos de calidad.'}
+          {currentCategory 
+            ? `Explora los productos de la categoría: ${getCurrentCategoryName()}` 
+            : 'Explora nuestra amplia selección de productos de calidad.'}
         </p>
       </div>
       <ProductContainer
         title=""
-        products={paginatedProducts} // Pasa los productos filtrados y paginados
+        products={paginatedProducts}
         sortOptions={sortOptions}
         currentSort={currentSort}
         onSortChange={handleSortChange}
@@ -229,7 +217,7 @@ export default function ProductsPage() {
         totalPages={totalPages}
         onPageChange={setCurrentPage}
         categories={categorias}
-        currentCategory={currentCategory || categorySlug}
+        currentCategory={currentCategory}
         onCategoryChange={handleCategoryChange}
       />
     </div>

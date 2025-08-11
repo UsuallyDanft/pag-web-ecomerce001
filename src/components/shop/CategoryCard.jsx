@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from 'react';
@@ -5,8 +6,9 @@ import './CategoryCard.css';
 import { useRouter } from 'next/navigation';
 
 const CategoryCard = ({ category, onView }) => {
-  // 1. La validación ahora es más simple
-  if (!category || !category.name) {
+  const router = useRouter();
+
+  if (!category) {
     return (
       <div className="category-card">
         <div className="category-info">
@@ -17,17 +19,19 @@ const CategoryCard = ({ category, onView }) => {
     );
   }
 
-  // 2. Desestructuramos los datos directamente del objeto 'category'
+  console.log('CategoryCard - Categoría recibida:', category);
+
   const { name, description, image, slug } = category;
-
-  const router = useRouter();
-
-  // 3. Construimos la URL de la imagen desde la nueva estructura
+  
+  // Construir URL de imagen
   const strapiHost = process.env.NEXT_PUBLIC_STRAPI_HOST;
-  const imageUrl = image?.url ? new URL(image.url, strapiHost).href : '/placeholder.png';
+  const imageUrl = image?.url 
+    ? (image.url.startsWith('http') ? image.url : new URL(image.url, strapiHost).href)
+    : '/placeholder.png';
 
   const handleViewProducts = () => {
     if (slug) {
+      console.log('Navegando a productos con slug:', slug);
       router.push(`/products?category=${slug}`);
     } else if (onView) {
       onView(category);
@@ -39,10 +43,11 @@ const CategoryCard = ({ category, onView }) => {
       <img src={imageUrl} alt={name} className="category-image" />
       <div className="category-info">
         <h3 className="category-name">{name}</h3>
-        {/* La descripción parece ser un texto simple en tu API, no enriquecido */}
         <p className="category-description">{description || 'Sin descripción'}</p>
         <div className="category-actions">
-          <button className="view-btn" onClick={handleViewProducts}>Ver productos</button>
+          <button className="view-btn" onClick={handleViewProducts}>
+            Ver productos
+          </button>
         </div>
       </div>
     </div>

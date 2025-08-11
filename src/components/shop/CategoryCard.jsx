@@ -1,55 +1,49 @@
+"use client";
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
 import './CategoryCard.css';
+import { useRouter } from 'next/navigation';
 
-const CategoryCard = ({ category }) => {
+const CategoryCard = ({ category, onView }) => {
+  // 1. La validación ahora es más simple
+  if (!category || !category.name) {
+    return (
+      <div className="category-card">
+        <div className="category-info">
+          <h3 className="category-name">Cargando...</h3>
+          <p className="category-description">Cargando descripción...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Desestructuramos los datos directamente del objeto 'category'
+  const { name, description, image, slug } = category;
+
   const router = useRouter();
 
-  const handleClick = () => {
-    console.log('Navegando a productos de categoría:', category.slug);
-    // Navegar a la página de productos con el parámetro de categoría
-    router.push(`/products?category=${category.slug}`);
-  };
+  // 3. Construimos la URL de la imagen desde la nueva estructura
+  const strapiHost = process.env.NEXT_PUBLIC_STRAPI_HOST;
+  const imageUrl = image?.url ? new URL(image.url, strapiHost).href : '/placeholder.png';
 
-  // Obtener la URL de la imagen
-  const getImageUrl = () => {
-    if (!category.image?.data) {
-      return '/placeholder.png';
+  const handleViewProducts = () => {
+    if (slug) {
+      router.push(`/products?category=${slug}`);
+    } else if (onView) {
+      onView(category);
     }
-
-    const imageData = category.image.data;
-    const imageUrl = imageData.attributes?.url || imageData.url;
-    
-    if (!imageUrl) {
-      return '/placeholder.png';
-    }
-
-    // Si la URL ya es completa, usarla tal como está
-    if (imageUrl.startsWith('http')) {
-      return imageUrl;
-    }
-
-    // Si no, construir la URL completa
-    return new URL(imageUrl, process.env.NEXT_PUBLIC_STRAPI_HOST).href;
   };
 
   return (
-    <div className="category-card" onClick={handleClick}>
-      <div className="category-image">
-        <img 
-          src={getImageUrl()} 
-          alt={category.name}
-          onError={(e) => {
-            e.target.src = '/placeholder.png';
-          }}
-        />
-      </div>
+    <div className="category-card">
+      <img src={imageUrl} alt={name} className="category-image" />
       <div className="category-info">
-        <h3>{category.name}</h3>
-        {category.description && (
-          <p>{category.description}</p>
-        )}
+        <h3 className="category-name">{name}</h3>
+        {/* La descripción parece ser un texto simple en tu API, no enriquecido */}
+        <p className="category-description">{description || 'Sin descripción'}</p>
+        <div className="category-actions">
+          <button className="view-btn" onClick={handleViewProducts}>Ver productos</button>
+        </div>
       </div>
     </div>
   );

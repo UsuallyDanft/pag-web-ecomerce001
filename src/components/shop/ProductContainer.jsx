@@ -1,7 +1,8 @@
+
 import React from 'react';
-import ProductCard from './ProductCard'; // Importamos el componente de la tarjeta
+import ProductCard from './ProductCard';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import './ProductContainer.css'; // Corrige el nombre del archivo de estilos
+import './ProductContainer.css';
 
 const ProductContainer = ({
   title = '',
@@ -13,9 +14,16 @@ const ProductContainer = ({
   totalPages = 1,
   onPageChange = () => {},
   categories = [],
-  currentCategory,
-  onCategoryChange
+  currentCategory = null,
+  onCategoryChange = () => {}
 }) => {
+  
+  const handleCategoryChange = (e) => {
+    const value = e.target.value;
+    // Si el valor es vacío, pasar null; si no, pasar el valor
+    onCategoryChange(value === '' ? null : value);
+  };
+
   return (
     <div className="products-container">
       <div className="products-header">
@@ -24,16 +32,19 @@ const ProductContainer = ({
           <div className="select-wrapper">
             <select
               className="category-select"
-              value={currentCategory === null ? '' : currentCategory || ''}
-              onChange={(e) => onCategoryChange(e.target.value === '' ? null : e.target.value)}
+              value={currentCategory || ''}
+              onChange={handleCategoryChange}
               title="Filtrar por categoría"
             >
               <option value="">Todos los productos</option>
-              {categories.filter(category => category.slug && category.name).map((category) => (
-                <option key={category.id} value={category.slug}>
-                  {category.name}
-                </option>
-              ))}
+              {categories
+                .filter(category => category.slug && category.name)
+                .map((category) => (
+                  <option key={category.id} value={category.slug}>
+                    {category.name}
+                  </option>
+                ))
+              }
             </select>
           </div>
 
@@ -45,17 +56,32 @@ const ProductContainer = ({
               title="Ordenar productos"
             >
               {sortOptions.map(option => (
-                <option key={option.value} value={option.value}>{option.label}</option>
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
               ))}
             </select>
           </div>
         </div>
       </div>
+      
       <div className="products-list">
-        {products.map(product => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        {products.length > 0 ? (
+          products.map(product => (
+            <ProductCard key={product.id} product={product} />
+          ))
+        ) : (
+          <div style={{ 
+            gridColumn: '1 / -1', 
+            textAlign: 'center', 
+            padding: '3rem',
+            color: 'var(--text-secondary)'
+          }}>
+            <p>No se encontraron productos para esta categoría.</p>
+          </div>
+        )}
       </div>
+      
       {totalPages > 1 && (
         <div className="pagination">
           <button

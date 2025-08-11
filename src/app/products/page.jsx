@@ -35,22 +35,28 @@ export default function ProductsPage() {
         if (data && data.data) {
           console.log(`Total de categorías recibidas: ${data.data.length}`);
 
-          // Mostrar cada categoría para debug
-          data.data.forEach((category, index) => {
-            console.log(`Categoría ${index}:`, category);
-            console.log(`- ID: ${category.id}`);
-            console.log(`- Attributes:`, category.attributes);
-            if (category.attributes) {
-              console.log(`- Slug: ${category.attributes.slug}`);
-              console.log(`- Name: ${category.attributes.name}`);
-              console.log(`- Description: ${category.attributes.description}`);
-            }
+          // Transformar categorías a un formato consistente
+          const transformedCategories = data.data.map(category => {
+            const attributes = category.attributes || category;
+            return {
+              id: category.id,
+              slug: attributes.slug,
+              name: attributes.name,
+              description: attributes.description,
+              ...attributes
+            };
           });
 
-          // Las categorías ya vienen con la estructura correcta de Strapi
-          const transformedCategories = data.data;
+          // Mostrar cada categoría para debug
+          transformedCategories.forEach((category, index) => {
+            console.log(`Categoría ${index}:`, {
+              id: category.id,
+              slug: category.slug,
+              name: category.name
+            });
+          });
 
-          console.log(`Categorías transformadas: ${transformedCategories.length}`, transformedCategories);
+          console.log(`Categorías transformadas: ${transformedCategories.length}`);
           setCategorias(transformedCategories);
         } else {
           console.log("No se encontraron datos de categorías:", data);
@@ -69,8 +75,7 @@ export default function ProductsPage() {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        // 3. Construye la ruta de la API dinámicamente
-        let apiPath = '/api/products?populate=*';
+        console.log("=== INICIANDO CARGA DE PRODUCTOS ===");
         
         // Determinar la categoría activa
         let activeCategory = null;
@@ -83,24 +88,38 @@ export default function ProductsPage() {
           activeCategory = categorySlug;
         }
         
+        console.log("Categoría activa:", activeCategory);
+        console.log("categorySlug de URL:", categorySlug);
+        console.log("currentCategory:", currentCategory);
+        
+        // Construir la ruta de la API
+        let apiPath = '/api/products?populate[images]=*&populate[categories]=*';
+        
         // Solo aplicar filtro si activeCategory tiene un valor válido (no null ni vacío)
         if (activeCategory && activeCategory !== '') {
-          apiPath += `&filters[categories][slug][$eq]=${activeCategory}`;
+          // Filtrar productos que tengan una categoría con el slug específico
+          apiPath += `&filters[categories][slug][$eq]=${encodeURIComponent(activeCategory)}`;
         }
+        
+        console.log("URL de la API:", apiPath);
         const data = await queryAPI(apiPath);
-        console.log("=== RESPUESTA CRUDA DE PRODUCTOS ===", data.data);
+        console.log("=== RESPUESTA CRUDA DE PRODUCTOS ===", JSON.stringify(data, null, 2));
         if (data && data.data) {
+          console.log(`Total de productos recibidos: ${data.data.length}`);
+          
           // Transformar los datos de Strapi al formato que espera ProductCard
           const transformedProducts = data.data.map(product => {
             const attributes = product.attributes || product;
             let imageUrl = '/placeholder.png';
             let allImages = [];
 
-            if (attributes.images && attributes.images.length > 0) {
-              // Procesar todas las imágenes del producto
-              allImages = attributes.images.map(img => {
-                if (img.url) {
-                  return new URL(img.url, process.env.NEXT_PUBLIC_STRAPI_HOST).href;
+            // Procesar imágenes con la nueva estructura populate
+            const images = attributes.images?.data || attributes.images || [];
+            if (Array.isArray(images) && images.length > 0) {
+              allImages = images.map(img => {
+                const imgAttributes = img.attributes || img;
+                if (imgAttributes.url) {
+                  return new URL(imgAttributes.url, process.env.NEXT_PUBLIC_STRAPI_HOST).href;
                 }
                 return null;
               }).filter(url => url !== null);
@@ -111,8 +130,22 @@ export default function ProductsPage() {
               }
             }
 
-            console.log('Producto:', attributes.name, 'URL de imagen:', imageUrl, 'Todas las imágenes:', allImages);
-            const categories = attributes.categories || [];
+            // Procesar categorías con la nueva estructura populate
+            const categoriesData = attributes.categories?.data || attributes.categories || [];
+            const categories = categoriesData.map(cat => {
+              const catAttributes = cat.attributes || cat;
+              return {
+                id: cat.id,
+                slug: catAttributes.slug,
+                name: catAttributes.name,
+                ...catAttributes
+              };
+            });
+
+            console.log(`Producto: ${attributes.name}`);
+            console.log(`- Categorías:`, categories.map(c => c.name).join(', '));
+            console.log(`- Imagen principal:`, imageUrl);
+            
             return {
               id: product.id,
               slug: attributes.slug,
@@ -122,11 +155,14 @@ export default function ProductsPage() {
               imageUrl, // Imagen principal
               allImages, // Todas las imágenes del producto
               categories,
-              stock: attributes.stock, // <-- Ahora seguro viene de attributes
+              stock: attributes.stock,
             };
           });
+          
+          console.log(`Productos transformados: ${transformedProducts.length}`);
           setProductos(transformedProducts);
         } else {
+          console.log("No se encontraron productos");
           setProductos([]);
         }
       } catch (error) {
@@ -194,29 +230,29 @@ export default function ProductsPage() {
           marginBottom: '1rem', 
           color: 'var(--text-primary)'
         }}>
-          {currentCategory === null ? 
+          {currentCategory === null && !categorySlug ? 
             'Todos los Productos' : 
-            (currentCategory || categorySlug) ? 
-              (() => {
-                const activeSlug = currentCategory || categorySlug;
-                const matchingCategory = categorias.find(cat => cat.slug === activeSlug);
-                return matchingCategory ? matchingCategory.name : activeSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-              })() : 
-              'Todos los Productos'}
+            (() => {
+              const activeSlug = currentCategory || categorySlug;
+              if (!activeSlug) return 'Todos los Productos';
+              
+              const matchingCategory = categorias.find(cat => cat.slug === activeSlug);
+              return matchingCategory ? matchingCategory.name : activeSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            })()}
         </h1>
         <p style={{ 
           fontSize: '1.2rem', 
           color: 'var(--text-secondary)'
         }}>
-          {currentCategory === null ? 
+          {currentCategory === null && !categorySlug ? 
             'Explora nuestra amplia selección de productos de calidad.' : 
-            (currentCategory || categorySlug) ? 
-              (() => {
-                const activeSlug = currentCategory || categorySlug;
-                const matchingCategory = categorias.find(cat => cat.slug === activeSlug);
-                return `Explora los productos de la categoría: ${matchingCategory ? matchingCategory.name : activeSlug.replace(/-/g, ' ')}`;
-              })() : 
-              'Explora nuestra amplia selección de productos de calidad.'}
+            (() => {
+              const activeSlug = currentCategory || categorySlug;
+              if (!activeSlug) return 'Explora nuestra amplia selección de productos de calidad.';
+              
+              const matchingCategory = categorias.find(cat => cat.slug === activeSlug);
+              return `Explora los productos de la categoría: ${matchingCategory ? matchingCategory.name : activeSlug.replace(/-/g, ' ')}`;
+            })()}
         </p>
       </div>
       <ProductContainer

@@ -47,19 +47,8 @@ export default function ProductsPage() {
             }
           });
 
-          // Transformar categorías para que tengan la estructura esperada
-          const transformedCategories = data.data.map(category => {
-            console.log(`Transformando categoría ${category.id}:`, category);
-            return {
-              id: category.id,
-              attributes: {
-                slug: category.slug,
-                name: category.name,
-                description: category.description,
-                image: category.image
-              }
-            };
-          });
+          // Las categorías ya vienen con la estructura correcta de Strapi
+          const transformedCategories = data.data;
 
           console.log(`Categorías transformadas: ${transformedCategories.length}`, transformedCategories);
           setCategorias(transformedCategories);
@@ -205,7 +194,11 @@ export default function ProductsPage() {
           {currentCategory === null ? 
             'Todos los Productos' : 
             (currentCategory || categorySlug) ? 
-              ((currentCategory || categorySlug).replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())) : 
+              (() => {
+                const activeSlug = currentCategory || categorySlug;
+                const matchingCategory = categorias.find(cat => cat.slug === activeSlug);
+                return matchingCategory ? matchingCategory.name : activeSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+              })() : 
               'Todos los Productos'}
         </h1>
         <p style={{ 
@@ -215,7 +208,11 @@ export default function ProductsPage() {
           {currentCategory === null ? 
             'Explora nuestra amplia selección de productos de calidad.' : 
             (currentCategory || categorySlug) ? 
-              `Explora los productos de la categoría: ${(currentCategory || categorySlug).replace(/-/g, ' ')}` : 
+              (() => {
+                const activeSlug = currentCategory || categorySlug;
+                const matchingCategory = categorias.find(cat => cat.slug === activeSlug);
+                return `Explora los productos de la categoría: ${matchingCategory ? matchingCategory.name : activeSlug.replace(/-/g, ' ')}`;
+              })() : 
               'Explora nuestra amplia selección de productos de calidad.'}
         </p>
       </div>

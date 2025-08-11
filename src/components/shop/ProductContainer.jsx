@@ -29,9 +29,9 @@ const ProductContainer = ({
               title="Filtrar por categoría"
             >
               <option value="">Todos los productos</option>
-              {categories.filter(category => category.attributes && category.attributes.slug && category.attributes.name).map((category) => (
-                <option key={category.id} value={category.attributes.slug}>
-                  {category.attributes.name}
+              {categories.filter(category => category.slug && category.name).map((category) => (
+                <option key={category.id} value={category.slug}>
+                  {category.name}
                 </option>
               ))}
             </select>

@@ -72,17 +72,20 @@ export default function ProductsPage() {
         // 3. Construye la ruta de la API dinámicamente
         let apiPath = '/api/products?populate=*';
         
-        // Si currentCategory es explícitamente null (se seleccionó "Todos los productos")
-        // entonces ignoramos categorySlug y traemos todos los productos
-        if (currentCategory === null) {
-          // No añadir filtro - traer todos los productos
+        // Determinar la categoría activa
+        let activeCategory = null;
+        
+        // Si currentCategory está definido (no es undefined), usarlo
+        if (currentCategory !== undefined) {
+          activeCategory = currentCategory; // Puede ser null (todos los productos) o un slug específico
         } else {
-          // Si currentCategory tiene valor, lo usamos, sino usamos categorySlug
-          const activeCategory = currentCategory || categorySlug;
-          if (activeCategory && activeCategory !== '') {
-            // Si hay un slug de categoría válido, añade el filtro a la ruta
-            apiPath += `&filters[categories][slug][$eq]=${activeCategory}`;
-          }
+          // Si currentCategory no está definido, usar categorySlug de la URL
+          activeCategory = categorySlug;
+        }
+        
+        // Solo aplicar filtro si activeCategory tiene un valor válido (no null ni vacío)
+        if (activeCategory && activeCategory !== '') {
+          apiPath += `&filters[categories][slug][$eq]=${activeCategory}`;
         }
         const data = await queryAPI(apiPath);
         console.log("=== RESPUESTA CRUDA DE PRODUCTOS ===", data.data);

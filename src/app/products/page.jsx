@@ -93,7 +93,7 @@ export default function ProductsPage() {
         console.log("currentCategory:", currentCategory);
         
         // Construir la ruta de la API
-        let apiPath = '/api/products?populate[images]=*&populate[categories]=*';
+        let apiPath = '/api/products?populate=*';
         
         // Solo aplicar filtro si activeCategory tiene un valor válido (no null ni vacío)
         if (activeCategory && activeCategory !== '') {
@@ -103,7 +103,12 @@ export default function ProductsPage() {
         
         console.log("URL de la API:", apiPath);
         const data = await queryAPI(apiPath);
-        console.log("=== RESPUESTA CRUDA DE PRODUCTOS ===", JSON.stringify(data, null, 2));
+        console.log("=== RESPUESTA CRUDA DE PRODUCTOS ===");
+        console.log("Datos completos:", JSON.stringify(data, null, 2));
+        
+        if (data && data.data && data.data.length > 0) {
+          console.log("Primer producto para análisis:", JSON.stringify(data.data[0], null, 2));
+        }
         if (data && data.data) {
           console.log(`Total de productos recibidos: ${data.data.length}`);
           
@@ -113,13 +118,16 @@ export default function ProductsPage() {
             let imageUrl = '/placeholder.png';
             let allImages = [];
 
-            // Procesar imágenes con la nueva estructura populate
+            // Procesar imágenes con la nueva estructura de Strapi v5
             const images = attributes.images?.data || attributes.images || [];
             if (Array.isArray(images) && images.length > 0) {
               allImages = images.map(img => {
-                const imgAttributes = img.attributes || img;
-                if (imgAttributes.url) {
-                  return new URL(imgAttributes.url, process.env.NEXT_PUBLIC_STRAPI_HOST).href;
+                // Manejar tanto la estructura v4 como v5 de Strapi
+                const imgData = img.attributes || img;
+                const imageUrl = imgData.url;
+                if (imageUrl) {
+                  // Si la URL ya es completa, usarla tal como está; si no, construir la URL completa
+                  return imageUrl.startsWith('http') ? imageUrl : new URL(imageUrl, process.env.NEXT_PUBLIC_STRAPI_HOST).href;
                 }
                 return null;
               }).filter(url => url !== null);
@@ -129,6 +137,8 @@ export default function ProductsPage() {
                 imageUrl = allImages[0];
               }
             }
+
+            console.log(`Producto: ${attributes.name} - Total imágenes procesadas: ${allImages.length}`);
 
             // Procesar categorías con la nueva estructura populate
             const categoriesData = attributes.categories?.data || attributes.categories || [];

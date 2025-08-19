@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import ProductSlider from '@/components/shop/ProductSlider';
 import './page.css';
-import { getSliderProductsNewTag } from '@/components/lib/SliderApiNewTag';
+import { getNewestProducts } from '@/components/lib/SliderApiNewP'; 
 import { getWelcomeData } from '@/components/lib/WelcomeApi';
 import { getBannerImageUrl } from '@/components/lib/BannerHomeApi';
 
@@ -21,12 +21,13 @@ export default function Page() {
       const welcomeDataObtenida = await getWelcomeData();
       setWelcomeData(welcomeDataObtenida);
       
-      const productosObtenidos = await getSliderProductsNewTag();
+      // 👇 CAMBIO 2: Llama a la nueva función
+      const productosObtenidos = await getNewestProducts(); 
       setProductos(productosObtenidos);
 
-      // 3. LLAMAR a la API para obtener la URL de la imagen
+      // LLAMAR a la API para obtener la URL de la imagen
       const imageUrl = await getBannerImageUrl();
-    setBannerImageUrl(imageUrl);
+      setBannerImageUrl(imageUrl);
     };
 
     cargarDatos();
@@ -49,10 +50,10 @@ export default function Page() {
 
       {/* banner de imagen publicitaria */}
       {bannerImageUrl && (
-  <div className='BannerImage'>
-    <img src={bannerImageUrl} alt="Banner publicitario" />
-  </div>
-)}
+        <div className='BannerImage'>
+          <img src={bannerImageUrl} alt="Banner publicitario" />
+        </div>
+      )}
       
       <ProductSlider
         title="Añadidos Recientemente"

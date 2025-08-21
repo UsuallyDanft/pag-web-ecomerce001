@@ -31,7 +31,7 @@ body {
 
 :root {
   /* Variables para tema claro */
-  --bg-primary: #f1f1f1;
+  --bg-primary: #f5f4f4;
   --bg-secondary: #ffffff;
   --text-primary: #333333;
   --text-secondary: #666666;
@@ -39,6 +39,8 @@ body {
   --shadow-color: rgba(0, 0, 0, 0.1);
   --accent-color: #2481fc;
   --accent-hover: #4d7ee0;
+
+  --bg-presentB: #84f8e8; /* Azul naval muy oscuro para el banner */
 }
 
 .dark {
@@ -53,6 +55,7 @@ body {
   --shadow-color: rgba(0, 0, 0, 0.3);
   --accent-color: #63a4f9;     /* Azul brillante */
   --accent-hover: #4d7ee0;    /* Azul más oscuro para hover */
+  --bg-presentB: #1572d6; /* Azul naval muy oscuro para el banner */
 }
 
 /* Layout básico */

@@ -47,6 +47,12 @@ export default function Page() {
           </button>
         </Link>
       </div>
+      {/* Slider de productos más nuevos */}
+      <ProductSlider
+        title="Añadidos Recientemente"
+        products={productos}
+        onSeeMore={() => router.push('/products')}
+      />
 
       {/* banner de imagen publicitaria */}
       {bannerImageUrl && (
@@ -55,11 +61,6 @@ export default function Page() {
         </div>
       )}
       
-      <ProductSlider
-        title="Añadidos Recientemente"
-        products={productos}
-        onSeeMore={() => router.push('/products')}
-      />
     </div>
   );
 }

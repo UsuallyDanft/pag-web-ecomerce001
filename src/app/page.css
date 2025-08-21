@@ -1,14 +1,18 @@
 .presentBanner {
     width: 100%;
-    min-height: 100vh; /* <-- Añade esta línea */
+    min-height: 60vh; /* <-- Añade esta línea */
     display: flex;
+
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: auto;
     padding: 1rem;
-    
 
+    background: var(--bg-presentB);
+    
+    border-radius: 0 0 99% 99%;
+    
   }
 
 .presentBanner h1{

@@ -34,13 +34,15 @@ body {
   --bg-primary: #f5f4f4;
   --bg-secondary: #ffffff;
   --text-primary: #333333;
-  --text-secondary: #666666;
+  --text-secondary: #00000081;
   --border-color: #d4d4d4;
-  --shadow-color: rgba(0, 0, 0, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.3);
   --accent-color: #2481fc;
   --accent-hover: #4d7ee0;
 
-  --bg-presentB: #84f8e8; /* Azul naval muy oscuro para el banner */
+  /* Banner específico */
+  --bg-presentImg: url('public/banner-present.jpg');
+  --bg-presentB: #18c8f0; 
 }
 
 .dark {
@@ -55,7 +57,8 @@ body {
   --shadow-color: rgba(0, 0, 0, 0.3);
   --accent-color: #63a4f9;     /* Azul brillante */
   --accent-hover: #4d7ee0;    /* Azul más oscuro para hover */
-  --bg-presentB: #1572d6; /* Azul naval muy oscuro para el banner */
+
+  --bg-presentB: #0e64c0; /* Azul naval muy oscuro para el banner */
 }
 
 /* Layout básico */

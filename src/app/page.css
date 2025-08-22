@@ -1,6 +1,6 @@
 .presentBanner {
     width: 100%;
-    min-height: 60vh; /* <-- Añade esta línea */
+    min-height: 100vh; /* <-- Añade esta línea */
     display: flex;
 
     flex-direction: column;
@@ -9,9 +9,13 @@
     margin: auto;
     padding: 1rem;
 
-    background: var(--bg-presentB);
     
-    border-radius: 0 0 99% 99%;
+    
+    background-color: var(--bg-presentB);
+    
+    
+    background-size: cover;
+    border-radius: 0 0 0% 0%;
     
   }
 
@@ -30,6 +34,7 @@
     margin-top: 30px;
     align-items: center;
     width: 60%;
+
 }
 
 .presentBnButton{
